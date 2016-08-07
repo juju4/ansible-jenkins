@@ -1,0 +1,109 @@
+---
+## FIXME! Default does not seem to apply to meta dependencies. vars do
+
+### geerlingguy.jenkins ###
+
+## gitlab is taking 8080
+jenkins_http_port: 8888
+jenkins_url_prefix: ''
+#jenkins_url_prefix: '/jenkins'
+#jenkins_admin_username: admin
+#jenkins_admin_password: admin
+
+jenkins_plugins:
+#    - Folders Plugin
+    - build-timeout 
+    - build-monitor-plugin
+    - credentials-binding
+    - timestamper
+    - ws-cleanup
+    - ant
+    - gradle
+    - workflow-aggregator
+    - github-organization-folder
+    - pipeline-stage-view
+    - git
+    - subversion
+    - ssh-slaves
+    - matrix-auth
+    - pam-auth
+    - ldap
+    - email-ext
+    - mailer
+    - throttle-concurrents
+    - global-build-stats
+    - audit-trail 
+## OWASP
+    - antisamy-markup-formatter
+    - dependency-check-jenkins-plugin 
+    - zaproxy
+## Extra
+    - conditional-buildstep
+    - docker-plugin
+## https://issues.jenkins-ci.org/browse/JENKINS-26326
+    - vagrant
+#    - ec2
+#    - digitalocean ## DEPRECATED
+    - dashboard-view 
+    - embeddable-build-status
+    - warnings
+    - github
+    - active-directory
+    - ansible
+    - depgraph-view
+#    - DiskCheck Plugin
+    - packer
+    - violations
+    - analysis-core
+    - checkstyle
+#    - pmd
+#    - brakeman
+## http://jenkins-php.org/
+## http://www.phpmetrics.org/documentation/jenkins.html
+## https://www.sitepoint.com/series/php-quality-assurance-with-jenkins/
+## https://www.future-processing.pl/blog/php-code-analysis-on-jenkins/
+## http://erichogue.ca/2011/05/php/continuous-integration-in-php/
+    - sidebar-link
+    - cloverphp
+    - crap4j
+    - dry
+    - htmlpublisher
+    - jdepend
+    - plot
+    - xunit
+    - phing
+## http://www.alexconrad.org/2011/10/jenkins-and-python.html
+## http://bhfsteve.blogspot.ca/2012/04/automated-python-unit-testing-code_27.html
+    - cobertura
+#    - maven-plugin
+## ticketing
+#    - jira
+#    - periodicbackup
+    - ansicolor
+
+## If using PHPMetrics, need less strict Content Security Policy. see https://github.com/phpmetrics/website/pull/2
+## java.lang.OutOfMemoryError: Heap space   = -Xmx1048m
+## session timeout (default 30min)
+jenkins_java_options: "-Djenkins.install.runSetupWizard=false -Dmail.smtp.starttls.enable=true -Dhudson.DNSMultiCast.disabled=true -Dhudson.udp=-1 -Dhudson.model.DirectoryBrowserSupport.CSP=\\\"sandbox; default-src 'self'; img-src 'self'; style-src 'self' nvd3.org cdn.rawgit.com; script-src 'self' d3js.org nvd3.org cdn.rawgit.com\\\" -Xmx1048m"
+jenkins_init_changes:
+  - {option: "JENKINS_ARGS", value: "--prefix={{ jenkins_url_prefix }} --httpListenAddress=127.0.0.1 --ajp13Port=-1 --httpsPort=-1 --sessionTimeout=60"}
+  - {option: "JENKINS_JAVA_OPTIONS", value: "{{ jenkins_java_options }}"}
+
+### geerlingguy.gitlab ###
+
+## Note: GitlabCE has its own nginx and need extra customization to behave as subdir... keeping separate
+#gitlab_external_url: "http://x.y.z.2:9090/"
+## FIXME! this settings make gitlab-ctl reconfigure failing
+#gitlab_redirect_http_to_https: false
+gitlab_create_self_signed_cert: false
+gitlab_nginx_listen_port: 9090
+## gitlab: cant set initial password?
+## http://docs.gitlab.com/ce/security/reset_root_password.html
+## set project limit? cli?
+## Admin Area: Settings
+## https://github.com/gitlabhq/gitlabhq/issues/10151
+## Disable external signup? cli?
+## Admin Area: Settings
+## set users? cli?
+## Enable InfluxDB Metrics ? cli?
+

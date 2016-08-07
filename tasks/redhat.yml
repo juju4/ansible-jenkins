@@ -1,0 +1,9 @@
+---
+
+- name: yum | jenkins dependencies install
+  yum: name={{item}} state=present
+  with_items:
+    - git
+    - subversion
+    - graphviz
+

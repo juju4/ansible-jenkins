@@ -1,0 +1,24 @@
+## If using "jenkins" as process name, got "monit[14717]: 'check system' not defined in control file, failed to add automatic configuration (service name jenkins is used already) -- please add 'check system <name>' manually"
+ check process jenkins_daemon with pidfile /var/run/jenkins/jenkins.pid
+   group jenkins
+   start program = "/etc/init.d/jenkins start"
+   stop  program = "/etc/init.d/jenkins stop"
+    if cpu > 60% for 2 cycles then alert
+    if cpu > 80% for 5 cycles then restart
+   if 4 restarts within 12 cycles then timeout
+   if failed host localhost port 8888 with protocol http and request "/" with timeout 25 seconds for 4 times within 5 cycles then restart
+   depend java_bin
+   depend jenkins_war
+   depend jenkins_rc
+
+ check file java_bin with path /usr/bin/java
+   group jenkins
+   include /etc/monit/templates/rootbin
+ check file jenkins_war with path /usr/share/jenkins/jenkins.war
+   group jenkins
+   include /etc/monit/templates/rootbin
+  
+ check file jenkins_rc with path /etc/init.d/jenkins
+   group jenkins
+   include /etc/monit/templates/rootbin
+

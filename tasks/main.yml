@@ -1,0 +1,88 @@
+---
+
+- name: use public IP address as hostname/external url
+  set_fact:
+    jenkins_public_hostname: "{{ ansible_eth0.ipv4.address }}"
+    gitlab_external_url: "http://{{ ansible_eth0.ipv4.address }}:{{ gitlab_nginx_listen_port }}/"
+  when: ansible_eth0.ipv4.address is defined
+
+- include_vars: "{{ansible_distribution}}.{{ansible_lsb.major_release|int}}.yml"
+
+- include: debian.yml
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+- include: redhat.yml
+  when: ansible_os_family == "RedHat" or ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+
+- name: configure git so jenkins can interact w github
+  template: src=gitconfig.j2 dest=/var/lib/jenkins/.gitconfig mode=0644 owner=jenkins group=jenkins backup=yes
+  when: jenkins_git_email is defined
+
+- name: configure jenkins config
+  template: src=jenkins-config.xml.j2 dest=/var/lib/jenkins/config.xml mode=0644 owner=jenkins group=jenkins backup=yes
+- name: configure jenkins smtp server
+  template: src=hudson.tasks.Mailer.xml.j2 dest=/var/lib/jenkins/hudson.tasks.Mailer.xml mode=0644 owner=jenkins group=jenkins backup=yes
+  when: jenkins_smtphost is defined and jenkins_smtphost != ""
+
+- name: create ssh key for jenkins user
+  user: name=jenkins generate_ssh_key=yes ssh_key_comment="jenkins-key-for-{{ inventory_hostname }}" ssh_key_type={{ item }}
+  with_items:
+    - rsa
+    - ed25519
+
+- block:
+    - name: add job examples
+      template: src={{ item }} dest=/var/lib/jenkins/{{ item }} mode=0644
+      with_items: "{{ jenkins_job_examples }}"
+    - name: login
+      command: "java -jar /opt/jenkins-cli.jar -s http://localhost:{{ jenkins_http_port }}/{{ jenkins_url_prefix }} login --username {{ jenkins_admin_username }} --password {{ jenkins_admin_password }}"
+      ignore_errors: true
+    - name: have basic uptime job for testing?
+      shell: "java -jar /opt/jenkins-cli.jar -s http://localhost:{{ jenkins_http_port }}/{{ jenkins_url_prefix }} create-job {{ item[:-4] }} < /var/lib/jenkins/{{ item }}"
+      with_items: "{{ jenkins_job_examples }}"
+    ## FIXME! how to be idempotent
+      ignore_errors: true
+  when: jenkins_job_examples is defined
+
+- name: set configuration for nginx as reverse proxy
+  template: src=nginx.conf.j2 dest=/etc/nginx/sites-available/jenkins mode=0644 backup=yes
+  notify:
+    - restart nginx
+- name: enabled configuration for nginx as reverse proxy
+  file: src=/etc/nginx/sites-available/jenkins dest=/etc/nginx/sites-enabled/jenkins state=link
+  notify:
+    - restart nginx
+- name: disable default configuration for nginx
+  file: dest=/etc/nginx/sites-enabled/default state=absent
+  notify:
+    - restart nginx
+
+- include: monit.yml
+
+- name: Ensure nrpe.d dir exists
+  file: dest=/etc/nagios/nrpe.d state=directory mode=0755
+- name: add some nrpe commands for monitoring
+  template: src=jenkins-nrpe.cfg.j2 dest=/etc/nagios/nrpe.d/jenkins-nrpe.cfg mode=0644 backup=yes
+
+#- debug: var=scriptsdir
+#- set_fact:
+#    scriptsdir: /usr/local/scripts
+#- file: path={{ scriptsdir }} state=directory mode=0755
+#- name: add backup script
+#  template: src=backup-jenkins.sh.j2 dest={{ scriptsdir }}/backup-jenkins.sh mode=0755
+##- name: add restore script
+##  template: src=restore-jenkins.sh.j2 dest={{ scriptsdir }}/restore-jenkins.sh mode=0755
+#
+#- name: configure backup script 2/m with cron - debian
+#  cron: name="jenkins backup" minute=0 hour=23 day="2,16"
+#    user=root job="{{ scriptsdir }}/backup-jenkins.sh"
+#    cron_file=ansible_jenkinsbackup
+#  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+#- name: configure backup script 2/m with cron - redhat
+#  cron: name="jenkins backup" minute=0 hour=23 day="2,16"
+#    user=root job="{{ scriptsdir }}/backup-jenkins.sh"
+#  when: ansible_os_family == "RedHat" or ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+
+- include: cleaning.yml
+  when: jenkins_containers_cron_cleaning is defined and jenkins_containers_cron_cleaning
+

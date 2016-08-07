@@ -1,0 +1,92 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description></description>
+  <keepDependencies>false</keepDependencies>
+  <properties/>
+  <scm class="hudson.plugins.git.GitSCM" plugin="git@2.5.2">
+    <configVersion>2</configVersion>
+    <userRemoteConfigs>
+      <hudson.plugins.git.UserRemoteConfig>
+        <url>https://github.com/juju4/ansible-icinga2.git</url>
+      </hudson.plugins.git.UserRemoteConfig>
+    </userRemoteConfigs>
+    <branches>
+      <hudson.plugins.git.BranchSpec>
+        <name>*/master</name>
+      </hudson.plugins.git.BranchSpec>
+    </branches>
+    <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
+    <submoduleCfg class="list"/>
+    <extensions/>
+  </scm>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers/>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <hudson.tasks.Shell>
+      <command>cat &gt; /var/lib/jenkins/workspace/example-vagrant-icinga2/test/vagrant/Vagrantfile &lt;&lt;EOF
+VAGRANTFILE_API_VERSION = &quot;2&quot;
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+    #config.vm.box = &quot;ubuntu/trusty64&quot;
+    #config.vm.box = &quot;centos/7&quot;
+    #config.vm.box = &quot;aws&quot;
+
+## Note: w aws plugin, /vagrant content is rsync to target = disabled: true
+  config.vm.synced_folder &quot;.&quot;, &quot;/vagrant&quot;, disabled: true
+
+  config.vm.provider :digital_ocean do |provider, override|
+      ## https://github.com/smdahlen/vagrant-digitalocean/
+      ## https://www.digitalocean.com/community/questions/vagrant-does-does-not-work-with-do
+      provider.token = ENV[&apos;DO_TOKEN&apos;]
+      #override.ssh_key_name = ENV[&apos;DO_KEY_NAME&apos;]
+      override.ssh.private_key_path = ENV[&apos;DO_PRIVATE_KEY&apos;]
+      override.vm.box = &quot;digital_ocean&quot;
+      provider.image = &apos;ubuntu-14-04-x64&apos;
+      provider.region = &quot;tor1&quot;
+      #provider.region = &quot;nyc2&quot;
+      #provider.region = &quot;sgp1&quot;
+## https://www.digitalocean.com/community/questions/ams-region-availability-of-small-server-sizes
+      #provider.region = &quot;ams1&quot;
+      provider.size = &apos;512mb&apos;
+      #provider.private_networking = false
+      #provider.backups_enabled = false
+      #provider.ipv6 = false
+  end
+  
+    config.vm.provision :ansible do |ansible|
+       ansible.playbook = &quot;site.yml&quot;
+       #ansible.verbose = &quot;vvvv&quot;
+       #ansible.host_key_checking = false
+       #ansible.limit = &apos;all&apos;
+       ansible.sudo = true
+       ansible.extra_vars = { ansible_ssh_user: &apos;root&apos; }
+    end
+
+    config.vm.define &quot;icinga2&quot; do |icinga2|
+        icinga2.vm.hostname = &quot;icinga2&quot;
+    end
+end
+EOF
+
+## get digitalocean environment variables and keys = NOK
+#. /etc/profile</command>
+    </hudson.tasks.Shell>
+    <org.jenkinsci.plugins.vagrant.VagrantUpCommand plugin="vagrant@1.0.1">
+      <destroyOnError>true</destroyOnError>
+      <provider>--provider=digital_ocean</provider>
+      <wrapper>
+        <vagrantFile>/var/lib/jenkins/workspace/example-vagrant-icinga2/test/vagrant/Vagrantfile</vagrantFile>
+        <vagrantVm></vagrantVm>
+        <validated>false</validated>
+      </wrapper>
+      <dontKillMe>false</dontKillMe>
+    </org.jenkinsci.plugins.vagrant.VagrantUpCommand>
+  </builders>
+  <publishers/>
+  <buildWrappers/>
+</project>

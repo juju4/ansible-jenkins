@@ -1,0 +1,11 @@
+---
+
+## As continuous integration server, containers can stack and fill the disk... regular spring cleaning needed
+
+- name: stop&remove existing docker
+  cron: name="docker cleaning" minute="15" hour="5" job="docker rm --force $(docker ps -qa) 2>&1 > /tmp/docker_cleaning.log"
+- name: remove none docker images
+  cron: name="docker images cleaning" minute="25" hour="5" job="docker rmi $(docker images | grep '^<none>' | awk '{print $3}') 2>&1 > /tmp/docker_images_cleaning.log"
+- name: delete existing lxc
+  cron: name="lxc cleaning" minute="35" hour="5" job="lxc delete $(lxc list -c n | awk '!/---/ && !/NAME/ { print $2 }') 2>&1 > /tmp/lxc_cleaning.log"
+

@@ -1,0 +1,37 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+VAGRANTFILE_API_VERSION = "2"
+ENV['VAGRANT_DEFAULT_PROVIDER'] = 'virtualbox'
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+## FIXME! "==> vhost: Setting hostname... The following SSH command responded with a non-zero exit status. Vagrant assumes that this means the command failed! hostname -f"
+    #config.vm.box = "ubuntu/xenial64"
+    config.vm.box = "ubuntu/trusty64"
+    #config.vm.box = "centos/7"
+
+    config.vm.provision :ansible do |ansible|
+       ansible.playbook = "site.yml"
+       #ansible.verbose = "vvvv"
+       #ansible.host_key_checking = false
+       #ansible.limit = 'all'
+       ansible.sudo = true
+       ansible.extra_vars = { ansible_ssh_user: 'vagrant', jenkins_http_port: 8888, gitlab_external_url: "https://127.0.0.1/" }
+       ansible.groups = {
+          "myrole" => ["jenkins" ],
+       }
+    end
+
+    config.vm.define "jenkins" do |jenkins|
+        jenkins.vm.hostname = "jenkins"
+        jenkins.vm.provider "virtualbox" do |v|
+          v.memory = 1024
+        end
+        jenkins.vm.network "forwarded_port", guest: 80, host: 8080
+        jenkins.vm.network "forwarded_port", guest: 443, host: 8043
+        jenkins.vm.network "forwarded_port", guest: 8080, host: 8081
+        jenkins.vm.network "forwarded_port", guest: 8888, host: 8888
+    end
+
+end
+

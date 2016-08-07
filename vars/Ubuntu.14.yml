@@ -1,0 +1,5 @@
+---
+
+jenkins_extra_pkg:
+    - monit
+

@@ -1,0 +1,14 @@
+---
+
+- name: apt | jenkins dependencies
+  apt: name={{item}} state=present
+  with_items:
+    - git
+    - subversion
+    - graphviz
+
+- name: apt | jenkins dependencies - extra
+  apt: name={{item}} state=present
+  with_items:
+    - "{{ jenkins_extra_pkg }}"
+

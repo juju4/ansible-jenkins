@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<hudson>
+  <disabledAdministrativeMonitors/>
+  <version>1.0</version>
+  <numExecutors>{{ jenkins_numExecutors }}</numExecutors>
+  <mode>NORMAL</mode>
+  <useSecurity>true</useSecurity>
+  <authorizationStrategy class="hudson.security.FullControlOnceLoggedInAuthorizationStrategy">
+{% if jenkins_denyAnonymousReadAccess is defined and jenkins_denyAnonymousReadAccess %}
+    <denyAnonymousReadAccess>true</denyAnonymousReadAccess>
+{% else %}
+    <denyAnonymousReadAccess>false</denyAnonymousReadAccess>
+{% endif %}
+  </authorizationStrategy>
+  <securityRealm class="hudson.security.HudsonPrivateSecurityRealm">
+{% if jenkins_disableSignup is defined and jenkins_disableSignup %}
+    <disableSignup>true</disableSignup>
+{% else %}
+    <disableSignup>false</disableSignup>
+{% endif %}
+    <enableCaptcha>false</enableCaptcha>
+  </securityRealm>
+  <disableRememberMe>false</disableRememberMe>
+  <projectNamingStrategy class="jenkins.model.ProjectNamingStrategy$DefaultProjectNamingStrategy"/>
+  <workspaceDir>${JENKINS_HOME}/workspace/${ITEM_FULLNAME}</workspaceDir>
+  <buildsDir>${ITEM_ROOTDIR}/builds</buildsDir>
+{% if jenkins_safehtml_description is defined and jenkins_safehtml_description %}
+  <markupFormatter class="hudson.markup.RawHtmlMarkupFormatter" plugin="antisamy-markup-formatter@1.5">
+    <disableSyntaxHighlighting>false</disableSyntaxHighlighting>
+  </markupFormatter>
+{% else %}
+  <markupFormatter class="hudson.markup.EscapedMarkupFormatter"/>
+{% endif %}
+  <jdks/>
+  <viewsTabBar class="hudson.views.DefaultViewsTabBar"/>
+  <myViewsTabBar class="hudson.views.DefaultMyViewsTabBar"/>
+  <clouds/>
+  <scmCheckoutRetryCount>0</scmCheckoutRetryCount>
+  <views>
+    <hudson.model.AllView>
+      <owner class="hudson" reference="../../.."/>
+      <name>All</name>
+      <filterExecutors>false</filterExecutors>
+      <filterQueue>false</filterQueue>
+      <properties class="hudson.model.View$PropertyList"/>
+    </hudson.model.AllView>
+  </views>
+  <primaryView>All</primaryView>
+{% if jenkins_slaveAgentPort is defined and jenkins_slaveAgentPort %}
+  <slaveAgentPort>{{ jenkins_slaveAgentPort }}</slaveAgentPort>
+{% else %}
+  <slaveAgentPort>0</slaveAgentPort>
+{% endif %}
+  <label></label>
+  <nodeProperties/>
+  <globalNodeProperties/>
+</hudson>
