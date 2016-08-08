@@ -9,14 +9,14 @@ before_install:
 ## dependencies
  - git clone https://github.com/geerlingguy/ansible-role-java.git ../geerlingguy.java
  - git clone https://github.com/geerlingguy/ansible-role-jenkins.git ../geerlingguy.jenkins
- - git clone https://github.com/ernestas-poskus/ansible-role-docker.git ../ernestas-poskus.docker
+ - git clone https://github.com/geerlingguy/ansible-role-nginx.git ../geerlingguy.nginx
 ## for local travis execution as we use same default.yml than kitchen
- - mkdir /tmp/kitchen
- - ln -s /home/travis/build/juju4/ansible-jenkins/test/integration/default/tmp /tmp/kitchen/tmp
+# - mkdir /tmp/kitchen
+# - ln -s /home/travis/build/juju4/ansible-jenkins/test/integration/default/tmp /tmp/kitchen/tmp
 ## serverspec test
- - sudo apt-get install -qq ruby2.0 rake
- - sudo gem2.0 install serverspec
- - ln -s /home/travis/build/juju4/ansible-jenkins/test/integration/default/serverspec/Rakefile
+# - sudo apt-get install -qq ruby2.0 rake
+# - sudo gem2.0 install serverspec
+# - ln -s /home/travis/build/juju4/ansible-jenkins/test/integration/default/serverspec/Rakefile
 install:
   - pip install ansible
   - ansible --version
@@ -34,4 +34,6 @@ script:
 # Run the role/playbook again, checking to make sure it's idempotent.
   - "ansible-playbook -i inventory test/integration/default/default.yml --connection=local --sudo | tee /tmp/idempotency.log | grep -q 'changed=0.*failed=0'  && (echo 'Idempotence test: pass' && exit 0)  || (echo 'Idempotence test: fail' && cat /tmp/idempotency.log && exit 1)"
 
+# serverspec
+#  - "rake2.0 spec"
 
