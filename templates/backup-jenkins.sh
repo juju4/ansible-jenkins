@@ -13,10 +13,11 @@ dirs="/var/lib/jenkins \
     "
 
 ## exclude workspaces and plugins ?
-tar czf --exclude 'plugins/*/*' \
-    --exclude cache \
+tar czf $dest/backup-jenkins.tar.gz
+    --exclude 'plugins/*/*' \
     --exclude 'config-history/*' \
-    $dest/backup-jenkins.tar.gz $dirs
-tar tzf $dest/backup-icinga2.tar.gz > /dev/null
-
+    --exclude cache \
+    --exclude workspace \
+    $dirs
+tar tzf $dest/backup-jenkins.tar.gz > /dev/null
 

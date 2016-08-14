@@ -2,6 +2,10 @@
 scriptsdir: /usr/local/scripts
 backupdir: /var/_backup
 
+
+jenkins_user: jenkins
+jenkins_root: /var/lib/jenkins
+
 jenkins_numExecutors: 2
 #jenkins_smtphost: 127.0.0.1
 #jenkins_smtp_defaultdomain: example.com
@@ -23,14 +27,6 @@ jenkins_job_examples:
     - job-test-php-wordpress-metrics.xml
     - job-test-uptime.xml
     - php-template.xml
-
-docker_users:
-    - jenkins
-
-lxd_users:
-    - jenkins
-## global?
-#kitchen_user: jenkins
 
 ## nginx reverse proxy
 #jenkins_public_hostname: jenkins.domain.tld

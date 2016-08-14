@@ -31,13 +31,13 @@
     - ed25519
 
 - block:
-    - name: add job examples
+    - name: upload job examples
       template: src={{ item }} dest=/var/lib/jenkins/{{ item }} mode=0644
       with_items: "{{ jenkins_job_examples }}"
     - name: login
       command: "java -jar /opt/jenkins-cli.jar -s http://localhost:{{ jenkins_http_port }}/{{ jenkins_url_prefix }} login --username {{ jenkins_admin_username }} --password {{ jenkins_admin_password }}"
       ignore_errors: true
-    - name: have basic uptime job for testing?
+    - name: load job examples into jenkins through cli
       shell: "java -jar /opt/jenkins-cli.jar -s http://localhost:{{ jenkins_http_port }}/{{ jenkins_url_prefix }} create-job {{ item[:-4] }} < /var/lib/jenkins/{{ item }}"
       with_items: "{{ jenkins_job_examples }}"
     ## FIXME! how to be idempotent
@@ -82,6 +82,8 @@
 #  cron: name="jenkins backup" minute=0 hour=23 day="2,16"
 #    user=root job="{{ scriptsdir }}/backup-jenkins.sh"
 #  when: ansible_os_family == "RedHat" or ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+
+#- include: dashing.yml
 
 - include: cleaning.yml
   when: jenkins_containers_cron_cleaning is defined and jenkins_containers_cron_cleaning

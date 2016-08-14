@@ -1,0 +1,29 @@
+---
+
+## https://jenkins.io/blog/2016/01/10/beautiful-jenkins-dashboard/
+## https://kj187.github.io/dashing-jenkins_job/
+
+#- name: apt | install npm
+#  apt: name=npm state=present
+#  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+## NOK... too old...
+
+- name: npm | install dashing-js
+  npm: name=dashing-js global=yes
+
+- name: npm | install jenkins job widget dependencies
+  npm: name={{ item }}
+  with_items:
+    - jenkins-api
+    - cron
+    - moment
+    - request
+    - memory-cache
+  become: yes
+  become_user: "{{ jenkins_user }}"
+
+- name: dashing-js for jenkins install
+  command: "dashing-js install https://github.com/kj187/dashing-jenkins_job/archive/master.zip chdir={{ jenkins_root }}"
+  become: yes
+  become_user: "{{ jenkins_user }}"
+
