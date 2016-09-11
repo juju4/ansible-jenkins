@@ -80,6 +80,21 @@ https://wiki.jenkins-ci.org/display/JENKINS/Builds+failing+with+OutOfMemoryError
 
 * If you use node install through ssh and you have build using ssh (eg svn+ssh), you are advise to use separate key to separate risks.
 
+* Chunk error
+```SEVERE: I/O error in channel Chunked connection to http://localhost:8080/cli
+java.io.StreamCorruptedException: invalid stream header: 0A0A0A0A
+```
+=
+https://issues.jenkins-ci.org/browse/JENKINS-23232
+possible fix TCP port for JNLP agents (fixed value, not random, not disabled)
+
+* No X-Jenkins-CLI2-Port
+```
+java.io.IOException: No X-Jenkins-CLI2-Port among [X-Jenkins, null, Date, X-Hudson-Theme, X-Hudson, Content-Length, Expires, X-Jenkins-Session, Set-Cookie, Content-Type, Server, X-Content-Type-Options, Cache-Control]
+```
+https://github.com/geerlingguy/ansible-role-jenkins/issues/47
+check also which url path is correct / or /jenkins
+
 ## License
 
 BSD 2-clause

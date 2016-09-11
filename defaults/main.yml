@@ -1,4 +1,6 @@
 ---
+## also check vars/main.yml for meta roles dependencies values
+
 scriptsdir: /usr/local/scripts
 backupdir: /var/_backup
 
@@ -14,7 +16,8 @@ jenkins_disableSignup: true
 ## random (default)
 #jenkins_slaveAgentPort: 0
 ## disabled
-jenkins_slaveAgentPort: -1
+#jenkins_slaveAgentPort: -1
+jenkins_slaveAgentPort: 50000
 jenkins_safehtml_description: false
 
 jenkins_job_examples:
@@ -27,6 +30,7 @@ jenkins_job_examples:
     - job-test-php-wordpress-metrics.xml
     - job-test-uptime.xml
     - php-template.xml
+    - job-example-rotten_apple.xml
 
 ## nginx reverse proxy
 #jenkins_public_hostname: jenkins.domain.tld
@@ -39,6 +43,4 @@ jenkins_public_port: 9091
 
 ## NOT SUPPORTED
 #jenkins_gitlabce_combined: false
-
-jenkins_containers_cron_cleaning: true
 

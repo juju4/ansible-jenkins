@@ -1,0 +1,8 @@
+## /etc/aide/aide.conf.d
+/var/lib/jenkins$ VarDir
+/var/lib/jenkins/jobs$ VarDir
+!/var/lib/jenkins/workspace
+#/var/lib/jenkins/logs$ VarDir
+!/var/lib/jenkins/logs/tasks
+/var/lib/jenkins/updates$ VarDir
+/var/lib/jenkins/updates/.*$ OwnerMode

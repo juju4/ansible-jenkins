@@ -7,3 +7,10 @@
     - subversion
     - graphviz
 
+- block:
+    - name: review nginx.pid location - systemd
+      replace: dest=/etc/nginx/nginx.conf regexp='/var/run/nginx.pid' replace='/run/nginx.pid' backup=yes
+    - name: ensure nginx.pid link in /var/run
+      file: src=/run/nginx.pid dest=/var/run/nginx.pid state=link force=yes
+  when: ansible_distribution_release == '7'
+

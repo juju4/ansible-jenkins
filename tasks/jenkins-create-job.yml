@@ -1,0 +1,9 @@
+---
+
+- stat: path={{ jenkins_root }}/jobs/{{ job_name }}
+  register: jobdir
+
+- name: load job example {{ job_name }} into jenkins through cli
+  shell: "java -jar /opt/jenkins-cli.jar -s http://localhost:{{ jenkins_http_port }}/{{ jenkins_url_prefix }} create-job {{ job_name }} < {{ jenkins_root }}/{{ job_name }}.xml"
+  when: not jobdir.stat.exists
+

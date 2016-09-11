@@ -1,0 +1,9 @@
+---
+
+jenkins_extra_pkg:
+    - monit
+
+jenkins_user_sshkeytypes:
+    - rsa
+    - ed25519
+

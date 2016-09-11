@@ -2,7 +2,10 @@
 driver:
   name: lxd_cli
 ## https://www.stgraber.org/2016/04/13/lxd-2-0-docker-in-lxd-712/
-  profile: "default docker"
+#  profile: "docker"
+
+transport:
+  name: sftp
 
 provisioner:
   name: ansible_playbook
@@ -22,10 +25,14 @@ platforms:
   - name: ubuntu-16.04
   - name: ubuntu-14.04
 #  - name: ubuntu-12.04
-  - name: centos-7
+## FIXME!
+#TASK [geerlingguy.nginx : Ensure nginx is started and enabled to start at boot.] ***
+#       fatal: [localhost]: FAILED! => {"changed": false, "failed": true, "msg": "Job for nginx.service failed because a timeout was exceeded. See \"systemctl status nginx.service\" and \"journalctl -xe\" for details.\n"}
+#  - name: centos-7
+## FIXME!
+#TASK [geerlingguy.nginx : Ensure nginx is started and enabled to start at boot.] ***
+#       fatal: [localhost]: FAILED! => {"changed": false, "failed": true, "msg": "nginx: [emerg] bind() to 0.0.0.0:80 failed (98: Address already in use)\nnginx: [emerg] bind() to 0.0.0.0:80 failed (98: Address already in use)\nnginx: [emerg] bind() to 0.0.0.0:80 failed (98: Address already in use)\nnginx: [emerg] bind() to 0.0.0.0:80 failed (98: Address already in use)\nnginx: [emerg] bind() to 0.0.0.0:80 failed (98: Address already in use)\nnginx: [emerg] still could not bind()\n"}
 #  - name: centos-6
-## "Failed to complete #create action: [Broken pipe] on default-alpine-34"
-## do we have python2 in default image?
 #  - name: alpine-3.4
 
 suites:

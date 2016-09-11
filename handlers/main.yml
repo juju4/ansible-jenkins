@@ -5,4 +5,7 @@
   service: name=monit state=restarted
 - name: restart lxd
   service: name=lxd state=restarted
+  when: (ansible_virtualization_type is not defined or not (ansible_virtualization_type == "lxc" or ansible_virtualization_type == "kvm"))
+## centos7/vagrant/virtualbox
+  ignore_errors: true
 

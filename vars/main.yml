@@ -1,5 +1,6 @@
 ---
-## FIXME! Default does not seem to apply to meta dependencies. vars do
+## FIXME! defaults/ does not seem to apply to meta dependencies. vars/ do
+##	we set vars here to apply to roles in meta
 
 ### geerlingguy.jenkins ###
 
