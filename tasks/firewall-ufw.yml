@@ -1,0 +1,44 @@
+---
+
+- include: logging.yml
+
+- name: install ufw
+  package: name=ufw state=present
+
+## FIXME! ansible module only affect incoming traffic, not idempotent
+- name: ufw | default policy (incoming)
+  ufw: state=enabled policy={{ jenkins_ufw_default_policy }} log=yes
+- name: ufw | check current status
+  command: "ufw status verbose"
+  register: ufwstatus
+  changed_when: false
+- name: ufw | default policy (outgoing)
+  command: "ufw default {{ jenkins_ufw_default_policy }} outgoing"
+  when: "'{{ jenkins_ufw_default_policy }} (outgoing)' not in ufwstatus.stdout"
+
+- name: ufw | ensure logging medium is enabled
+  ufw: logging={{ jenkins_ufw_default_logging }}
+
+- name: ufw | always allow ssh
+  ufw: rule=allow name=OpenSSH log=yes
+
+- name: ufw | allow access from defined networks
+  ufw: rule=allow src={{ item }}
+  with_items: "{{ jenkins_ufw_access }}"
+
+- name: ufw | allow access from defined networks - with logging
+  ufw: rule=allow src={{ item }} log=yes
+  with_items: "{{ jenkins_ufw_access_with_log }}"
+
+- name: ufw | allow incoming traffic for defined ports
+  ufw: rule=allow interface=eth0 direction=in to_port={{ item }}
+  with_items: "{{ jenkins_ufw_allow_ports_in }}"
+
+- name: ufw | allow eth0 outgoing traffic for defined ports
+  ufw: rule=allow interface=eth0 direction=out to_port={{ item }} log={{ jenkins_ufw_out_logging }}
+  with_items: "{{ jenkins_ufw_allow_ports_out }}"
+
+- name: ufw | allow all outgoing traffic for defined interfaces
+  ufw: rule=allow interface={{ item }} direction=out
+  with_items: "{{ jenkins_ufw_allow_if_out }}"
+

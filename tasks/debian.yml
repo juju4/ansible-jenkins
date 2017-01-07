@@ -12,7 +12,8 @@
   with_items:
     - "{{ jenkins_extra_pkg }}"
 
-- file: dest=/etc/aide/aide.conf.d state=directory mode=0755
+- name: Ensure aide config directory exists
+  file: dest=/etc/aide/aide.conf.d state=directory mode=0755
 - name: add additional aide HIDS configuration
-  copy: src=99_aide_local_jenkins dest=/etc/aide/aide.conf.d/99_aide_local_jenkins mode=0644
+  template: src=99_aide_local_jenkins dest=/etc/aide/aide.conf.d/99_aide_local_jenkins mode=0644
 

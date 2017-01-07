@@ -5,11 +5,7 @@ python: "2.7"
 before_install:
  - sudo apt-get update -qq
  - sudo apt-get install -qq python-apt python-pycurl
- - ln -s ansible-jenkins ../jenkins
-## dependencies
- - git clone https://github.com/geerlingguy/ansible-role-java.git ../geerlingguy.java
- - git clone https://github.com/geerlingguy/ansible-role-jenkins.git ../geerlingguy.jenkins
- - git clone https://github.com/geerlingguy/ansible-role-nginx.git ../geerlingguy.nginx
+ - "[ -f get-dependencies.sh ] && sh -x get-dependencies.sh"
 ## for local travis execution as we use same default.yml than kitchen
 # - mkdir /tmp/kitchen
 # - ln -s /home/travis/build/juju4/ansible-jenkins/test/integration/default/tmp /tmp/kitchen/tmp
@@ -34,6 +30,6 @@ script:
 # Run the role/playbook again, checking to make sure it's idempotent.
   - "ansible-playbook -i inventory test/integration/default/default.yml --connection=local --sudo | tee /tmp/idempotency.log | grep -q 'changed=0.*failed=0'  && (echo 'Idempotence test: pass' && exit 0)  || (echo 'Idempotence test: fail' && cat /tmp/idempotency.log && exit 1)"
 
-# serverspec
-#  - "rake2.0 spec"
-
+# Serverspec
+#  - "test/integration/default/serverspec/run-local-tests.sh"
+  - "cd test/integration/default/serverspec/ && bundle exec rake spec"

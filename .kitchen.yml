@@ -39,4 +39,14 @@ suites:
   - name: default
     run_list:
     attributes:
+  - name: default-vascan
+    run_list:
+    includes:
+      - ubuntu-16.04
+#      - ubuntu-14.04
+#      - centos-7
+#      - centos-6
+    provisioner:
+      name: ansible_playbook
+      playbook: test/integration/default-vascan/default.yml
 

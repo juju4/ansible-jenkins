@@ -1,0 +1,23 @@
+---
+
+- hosts: all
+  vars:
+    - w3af_scan: true
+    - w3af_scan_script: w3af_owasp_script.w3af
+#    - w3af_scan_targets_url: "http://127.0.0.1:8888"	# jenkins
+    - w3af_scan_targets_url: "http://127.0.0.1:9091"	# nginx reverse proxy
+    - w3af_scan_targets_host: localhost
+    - w3af_scan_targets_port: 9091
+    - w3af_scan_targets_auth_url: "{{ w3af_scan_targets_url }}/login?from=%2F"
+    - w3af_scan_targets_check_url: "{{ w3af_scan_targets_url }}/user/admin/"
+    - w3af_scan_targets_pass: admin
+    - w3af_scan_targets_user_field: j_username
+    - w3af_scan_targets_pass_field: j_password
+    - w3af_scan_targets_dataformat: "{{ w3af_scan_targets_user_field }}=%U&{{ w3af_scan_targets_pass_field }}=%P"
+    - w3af_scan_output_file: "/tmp/output-w3af.txt"
+    - w3af_pull: false
+    - w3af_pulldir: tmp/
+  roles:
+    - juju4.jenkins
+    - juju4.w3af
+

@@ -34,10 +34,12 @@ jenkins_plugins:
     - throttle-concurrents
     - global-build-stats
     - audit-trail 
+#    - xframe-filter-plugin
 ## OWASP
     - antisamy-markup-formatter
     - dependency-check-jenkins-plugin 
-    - zaproxy
+#    - zaproxy      ## deprecated
+    - zap
 ## Extra
     - conditional-buildstep
     - docker-plugin
@@ -49,8 +51,14 @@ jenkins_plugins:
     - embeddable-build-status
     - warnings
     - github
+    - github-oauth
+## http://jakubstas.com/github-and-jenkins-pull-request-checking/
+    - ghprb
     - active-directory
-    - ansible
+## https://github.com/solita/solita-cd/issues/1
+## https://issues.jenkins-ci.org/browse/JENKINS-32705
+## FIXME! (item=ansible) => {"changed": true, "cmd": ["java", "-jar", "/opt/jenkins-cli.jar", "-s", "http://localhost:8888/", "install-plugin", "ansible", "--username", "admin", "--password", "admin"], "delta": "0:00:00.661496", "end": "2016-11-27 00:19:39.926434", "failed": true, "item": "ansible", "rc": 1, "start": "2016-11-27 00:19:39.264938", "stderr": "\nERROR: Unexpected exception occurred while performing install-plugin command.\njava.io.IOException: Failed to copy ansible to /var/lib/jenkins/plugins/ansible.jpi\n\tat hudson.FilePath.copyTo(FilePath.java:1984)\n\tat hudson.cli.InstallPluginCommand.run(InstallPluginCommand.java:86)\n\tat hudson.cli.CLICommand.main(CLICommand.java:264)\n\tat hudson.cli.CliManagerImpl.main(CliManagerImpl.java:93)\n\tat sun.reflect.GeneratedMethodAccessor33.invoke(Unknown Source)\n\tat sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)\n\tat java.lang.reflect.Method.invoke(Method.java:498)\n\tat hudson.remoting.RemoteInvocationHandler$RPCRequest.perform(RemoteInvocationHandler.java:894)\n\tat hudson.remoting.RemoteInvocationHandler$RPCRequest.call(RemoteInvocationHandler.java:869)\n\tat hudson.remoting.RemoteInvocationHandler$RPCRequest.call(RemoteInvocationHandler.java:828)\n\tat hudson.remoting.UserRequest.perform(UserRequest.java:153)\n\tat hudson.remoting.UserRequest.perform(UserRequest.java:50)\n\tat hudson.remoting.Request$2.run(Request.java:336)\n\tat hudson.remoting.InterceptingExecutorService$1.call(InterceptingExecutorService.java:68)\n\tat hudson.cli.CliManagerImpl$1.call(CliManagerImpl.java:64)\n\tat hudson.remoting.CallableDecoratorAdapter.call(CallableDecoratorAdapter.java:18)\n\tat hudson.remoting.CallableDecoratorList$1.call(CallableDecoratorList.java:21)\n\tat jenkins.util.ContextResettingExecutorService$2.call(ContextResettingExecutorService.java:46)\n\tat java.util.concurrent.FutureTask.run(FutureTask.java:266)\n\tat java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)\n\tat java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)\n\tat java.lang.Thread.run(Thread.java:745)\nCaused by: java.io.IOException: remote file operation failed: ansible at hudson.remoting.Channel@4dc27e3e:CLI channel from /127.0.0.1: java.io.FileNotFoundException: ansible (Is a directory)\n\tat hudson.FilePath.act(FilePath.java:992)\n\tat hudson.FilePath.act(FilePath.java:974)\n\tat hudson.FilePath.copyTo(FilePath.java:2005)\n\tat hudson.FilePath.copyTo(FilePath.java:1981)\n\t... 21 more\nCaused by: java.io.FileNotFoundException: ansible (Is a directory)\n\tat java.io.FileInputStream.open0(Native Method)\n\tat java.io.FileInputStream.open(FileInputStream.java:195)\n\tat java.io.FileInputStream.<init>(FileInputStream.java:138)\n\tat hudson.FilePath$41.invoke(FilePath.java:2010)\n\tat hudson.FilePath$41.invoke(FilePath.java:2005)\n\tat hudson.FilePath$FileCallableWrapper.call(FilePath.java:2731)\n\tat hudson.remoting.UserRequest.perform(UserRequest.java:153)\n\tat hudson.remoting.UserRequest.perform(UserRequest.java:50)\n\tat hudson.remoting.Request$2.run(Request.java:336)\n\tat hudson.remoting.InterceptingExecutorService$1.call(InterceptingExecutorService.java:68)\n\tat java.util.concurrent.FutureTask.run(FutureTask.java:266)\n\tat java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)\n\tat java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)\n\tat java.lang.Thread.run(Thread.java:745)\n\tat ......remote call to CLI channel from /127.0.0.1(Native Method)\n\tat hudson.remoting.Channel.attachCallSiteStackTrace(Channel.java:1537)\n\tat hudson.remoting.UserResponse.retrieve(UserRequest.java:253)\n\tat hudson.remoting.Channel.call(Channel.java:822)\n\tat hudson.FilePath.act(FilePath.java:985)\n\t... 24 more", "stdout": "Installing a plugin from local file: ansible", "stdout_lines": ["Installing a plugin from local file: ansible"], "warnings": []}
+#    - ansible
     - depgraph-view
 #    - DiskCheck Plugin
     - packer
@@ -81,6 +89,13 @@ jenkins_plugins:
 #    - jira
 #    - periodicbackup
     - ansicolor
+    - text-finder
+    - powershell
+    - thinBackup
+## https://jenkins.io/projects/blueocean/   new UX, alpha, sep 2016
+    - blueocean
+    - job-dsl
+
 
 ## If using PHPMetrics, need less strict Content Security Policy. see https://github.com/phpmetrics/website/pull/2
 ## java.lang.OutOfMemoryError: Heap space   = -Xmx1048m

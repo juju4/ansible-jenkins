@@ -1,0 +1,20 @@
+## /etc/aide/aide.conf.d
+{{ jenkins_root }}$ VarDir
+#{{ jenkins_root }}/jobs$ VarDir
+!{{ jenkins_root }}/jobs
+!{{ jenkins_root }}/workspace
+#{{ jenkins_root }}/logs$ VarDir
+{{ jenkins_root }}/logs/tasks$ VarDirTime
+{{ jenkins_root }}/logs/tasks/Download\ metadata.log*$ Log
+{{ jenkins_root }}/logs/tasks/Fingerprint\ cleanup.log*$ Log
+{{ jenkins_root }}/logs/tasks/Workspace\ clean-up.log*$ Log
+{{ jenkins_root }}/updates$ VarDirTime
+{{ jenkins_root }}/updates/.*$ OwnerMode
+{{ jenkins_root }}/updates/biz.neustar.jenkins.plugins.packer.PackerInstaller$ VarDirTime
+{{ jenkins_root }}/updates/hudson.plugins.gradle.GradleInstaller$ VarDirTime
+{{ jenkins_root }}/updates/hudson.tasks.Ant.AntInstaller$ VarDirTime
+{{ jenkins_root }}/updates/hudson.tasks.Maven.MavenInstaller$ VarDirTime
+{{ jenkins_root }}/updates/hudson.tools.JDKInstaller$ VarDirTime
+{{ jenkins_root }}/.owner$ InodeData
+!{{ jenkins_root }}/tmp$
+

@@ -20,18 +20,6 @@ jenkins_disableSignup: true
 jenkins_slaveAgentPort: 50000
 jenkins_safehtml_description: false
 
-jenkins_job_examples:
-    - job-example-java-webgoat.xml
-    - job-example-network-nanog63-dyn.xml
-    - job-example-php-dvwa.xml
-    - job-example-phpmetrics-dvwa.xml
-    - job-example-python-dsvw.xml
-    - job-example-vagrant-icinga2.xml
-    - job-test-php-wordpress-metrics.xml
-    - job-test-uptime.xml
-    - php-template.xml
-    - job-example-rotten_apple.xml
-
 ## nginx reverse proxy
 #jenkins_public_hostname: jenkins.domain.tld
 #jenkins_public_hostname: x.y.z.1
@@ -41,6 +29,45 @@ jenkins_public_subfolder: false
 #jenkins_public_https: true
 jenkins_public_port: 9091
 
+jenkins_job_examples: []
+
 ## NOT SUPPORTED
 #jenkins_gitlabce_combined: false
+
+## firewall ?
+#jenkins_ufw: false
+jenkins_ufw: true
+## only affect incoming traffic
+#jenkins_ufw_default_policy: allow
+jenkins_ufw_default_policy: deny
+jenkins_ufw_default_logging: medium
+jenkins_ufw_access:
+  - 10.0.0.0/8
+  - 172.16.0.0/12
+  - 192.168.0.0/16
+jenkins_ufw_access_with_log:
+## https://help.github.com/articles/what-ip-addresses-does-github-use-that-i-should-whitelist/
+  - 192.30.252.0/22
+jenkins_ufw_allow_ports_in:
+  - 22
+jenkins_ufw_out_logging: no
+jenkins_ufw_allow_ports_out:
+  - 22
+#  - 25
+  - 53
+  - 123
+## email/TLS?
+  - 587
+## mDNS (required by Jenkins)
+  - 5353
+## web
+  - 80
+  - 443
+  - 8080
+## gpg keyserver
+  - 11371
+
+## docker, lxc? (else dhclient will fail ...)
+jenkins_ufw_allow_if_out: []
+#  - lxdbr0
 

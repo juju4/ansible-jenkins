@@ -21,11 +21,7 @@ describe port(8888) do
   it { should be_listening }
 end
 
-describe command('java -jar /opt/jenkins-cli.jar -s http://localhost:8888/ login --username admin --password admin'), :if => os[:family] == 'ubuntu' && os[:release] == '16.04' do
-  its(:exit_status) { should eq 0 }
-end
 describe command('java -jar /opt/jenkins-cli.jar -s http://127.0.0.1:8888/ version'), :if => os[:family] == 'ubuntu' && os[:release] == '16.04' do
-  its(:stdout) { should match /2\.\d+/ }
   its(:exit_status) { should eq 0 }
 end
 describe command('java -jar /opt/jenkins-cli.jar -s http://127.0.0.1:8888/ list-plugins'), :if => os[:family] == 'ubuntu' && os[:release] == '16.04' do

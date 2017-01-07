@@ -47,6 +47,19 @@ server {
       proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
       proxy_set_header        X-Forwarded-Proto $scheme;
 
+      proxy_hide_header       x-required-permission;
+      proxy_hide_header       x-hudson-cli-port;
+      proxy_hide_header       x-jenkins;
+      proxy_hide_header       x-jenkins-cli2-port;
+      proxy_hide_header       x-you-are-authenticated-as;
+      proxy_hide_header       x-you-are-in-group;
+      proxy_hide_header       x-jenkins-cli-port;
+      proxy_hide_header       x-permission-implied-by;
+      proxy_hide_header       x-hudson;
+      proxy_hide_header       x-jenkins-session;
+
+      add_header              X-Frame-Options SAMEORIGIN;
+
 {% if jenkins_public_https is defined %}
       # Rewrite HTTPS requests from WAN to HTTP requests on LAN
       proxy_redirect http:// https://;

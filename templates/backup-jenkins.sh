@@ -8,7 +8,7 @@ umask 022
 
 dest={{ backupdir }}
 
-dirs="/var/lib/jenkins \
+dirs="{{ jenkins_root }} \
     /var/log/jenkins \
     "
 
