@@ -21,19 +21,19 @@ describe port(8888) do
   it { should be_listening }
 end
 
-describe command('java -jar /opt/jenkins-cli.jar -s http://127.0.0.1:8888/ version'), :if => os[:family] == 'ubuntu' && os[:release] == '16.04' do
+describe command('java -jar /opt/jenkins-cli.jar -s http://127.0.0.1:8888/ version --username admin --password admin'), :if => os[:family] == 'ubuntu' && os[:release] == '16.04' do
   its(:exit_status) { should eq 0 }
 end
-describe command('java -jar /opt/jenkins-cli.jar -s http://127.0.0.1:8888/ list-plugins'), :if => os[:family] == 'ubuntu' && os[:release] == '16.04' do
+describe command('java -jar /opt/jenkins-cli.jar -s http://127.0.0.1:8888/ list-plugins --username admin --password admin'), :if => os[:family] == 'ubuntu' && os[:release] == '16.04' do
   its(:stdout) { should match /git/ }
   its(:stdout) { should match /checkstyle/ }
   its(:exit_status) { should eq 0 }
 end
 
-describe command('java -jar /opt/jenkins-cli.jar -s http://127.0.0.1:8888/jenkins version'), :if => os[:family] == 'ubuntu' && os[:release] == '14.04' do
+describe command('java -jar /opt/jenkins-cli.jar -s http://127.0.0.1:8888/jenkins version --username admin --password admin'), :if => os[:family] == 'ubuntu' && os[:release] == '14.04' do
   its(:exit_status) { should eq 0 }
 end
-describe command('java -jar /opt/jenkins-cli.jar -s http://127.0.0.1:8888/jenkins list-plugins'), :if => os[:family] == 'ubuntu' && os[:release] == '14.04' do
+describe command('java -jar /opt/jenkins-cli.jar -s http://127.0.0.1:8888/jenkins list-plugins --username admin --password admin'), :if => os[:family] == 'ubuntu' && os[:release] == '14.04' do
   its(:stdout) { should match /git/ }
   its(:stdout) { should match /checkstyle/ }
   its(:exit_status) { should eq 0 }
