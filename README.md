@@ -1,4 +1,5 @@
-[![Build Status](https://travis-ci.org/juju4/ansible-jenkins.svg?branch=master)](https://travis-ci.org/juju4/ansible-jenkins)
+[![Build Status - Master](https://travis-ci.org/juju4/ansible-jenkins.svg?branch=master)](https://travis-ci.org/juju4/ansible-jenkins)
+[![Build Status - Devel](https://travis-ci.org/juju4/ansible-jenkins.svg?branch=devel)](https://travis-ci.org/juju4/ansible-jenkins/branches)
 # Jenkins ansible role
 
 Ansible role to setup jenkins with java.
@@ -10,6 +11,7 @@ You can use jenkinsslave role to setup extra nodes.
 ### Ansible
 It was tested on the following versions:
  * 2.0
+ * 2.2
 
 ### Operating systems
 
@@ -23,7 +25,7 @@ For example
 ```
 - host: all
   roles:
-    - jenkins
+    - juju4.jenkins
 ```
 
 ## Variables

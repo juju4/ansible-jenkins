@@ -38,7 +38,7 @@
 
 - block:
     - name: upload job examples
-      template: "src={{ item }} dest={{ jenkins_root }}/{{ item }} mode=0644 backup=yes"
+      template: "src={{ item }} dest={{ jenkins_root }}/{{ item | basename }} mode=0644 backup=yes"
       with_items: "{{ jenkins_job_examples }}"
     - name: login
       command: "java -jar /opt/jenkins-cli.jar -s http://localhost:{{ jenkins_http_port }}/{{ jenkins_url_prefix }} login --username {{ jenkins_admin_username }} --password {{ jenkins_admin_password }}"
@@ -69,24 +69,8 @@
 - name: add some nrpe commands for monitoring
   template: src=jenkins-nrpe.cfg.j2 dest=/etc/nagios/nrpe.d/jenkins-nrpe.cfg mode=0644 backup=yes
 
-#- debug: var=scriptsdir
-#- set_fact:
-#    scriptsdir: /usr/local/scripts
-#- file: path={{ scriptsdir }} state=directory mode=0755
-#- name: add backup script
-#  template: src=backup-jenkins.sh.j2 dest={{ scriptsdir }}/backup-jenkins.sh mode=0755
-##- name: add restore script
-##  template: src=restore-jenkins.sh.j2 dest={{ scriptsdir }}/restore-jenkins.sh mode=0755
-#
-#- name: configure backup script 2/m with cron - debian
-#  cron: name="jenkins backup" minute=0 hour=23 day="2,16"
-#    user=root job="{{ scriptsdir }}/backup-jenkins.sh"
-#    cron_file=ansible_jenkinsbackup
-#  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
-#- name: configure backup script 2/m with cron - redhat
-#  cron: name="jenkins backup" minute=0 hour=23 day="2,16"
-#    user=root job="{{ scriptsdir }}/backup-jenkins.sh"
-#  when: ansible_os_family == "RedHat" or ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+
+- include: backup-restore.yml
 
 #- include: dashing.yml
 

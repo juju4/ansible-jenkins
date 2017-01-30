@@ -6,6 +6,7 @@
 export PATH=/usr/sbin:/usr/bin:/sbin:/bin
 umask 022
 
+date=`date +%Y-%m-%d`
 dest={{ backupdir }}
 
 dirs="{{ jenkins_root }} \
@@ -13,11 +14,11 @@ dirs="{{ jenkins_root }} \
     "
 
 ## exclude workspaces and plugins ?
-tar czf $dest/backup-jenkins.tar.gz
+tar czf $dest/backup-jenkins.tar-$date.gz
     --exclude 'plugins/*/*' \
     --exclude 'config-history/*' \
     --exclude cache \
     --exclude workspace \
     $dirs
-tar tzf $dest/backup-jenkins.tar.gz > /dev/null
+tar tzf $dest/backup-jenkins.tar-$date.gz > /dev/null
 
