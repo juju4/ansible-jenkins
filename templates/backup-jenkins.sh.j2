@@ -14,7 +14,7 @@ dirs="{{ jenkins_root }} \
     "
 
 ## exclude workspaces and plugins ?
-tar czf $dest/backup-jenkins.tar-$date.gz
+tar czf $dest/backup-jenkins.tar-$date.gz \
     --exclude 'plugins/*/*' \
     --exclude 'config-history/*' \
     --exclude cache \
