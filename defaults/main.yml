@@ -29,7 +29,10 @@ jenkins_public_subfolder: false
 #jenkins_public_https: true
 jenkins_public_port: 9091
 
+## those one are templates on orchestrator
 jenkins_job_examples: []
+## those are on remote target
+jenkins_job_local_examples: []
 
 ## NOT SUPPORTED
 #jenkins_gitlabce_combined: false
@@ -66,6 +69,8 @@ jenkins_ufw_allow_ports_out:
   - 8080
 ## gpg keyserver
   - 11371
+## using dhcp?
+  - 67
 
 ## docker, lxc? (else dhclient will fail ...)
 jenkins_ufw_allow_if_out: []

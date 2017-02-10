@@ -8,15 +8,15 @@
    if 4 restarts within 12 cycles then timeout
    if failed host localhost port 8888 with protocol http and request "/" with timeout 25 seconds for 4 times within 5 cycles then restart
    depend java_bin
-   depend jenkins_war
+#   depend jenkins_war
    depend jenkins_rc
 
  check file java_bin with path /usr/bin/java
    group jenkins
    include /etc/monit/templates/rootbin
- check file jenkins_war with path /usr/share/jenkins/jenkins.war
-   group jenkins
-   include /etc/monit/templates/rootbin
+# check file jenkins_war with path /usr/share/jenkins/jenkins.war
+#   group jenkins
+#   include /etc/monit/templates/rootbin
   
  check file jenkins_rc with path /etc/init.d/jenkins
    group jenkins

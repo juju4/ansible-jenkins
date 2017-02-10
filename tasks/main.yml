@@ -40,14 +40,19 @@
     - name: upload job examples
       template: "src={{ item }} dest={{ jenkins_root }}/{{ item | basename }} mode=0644 backup=yes"
       with_items: "{{ jenkins_job_examples }}"
-    - name: login
-      command: "java -jar /opt/jenkins-cli.jar -s http://localhost:{{ jenkins_http_port }}/{{ jenkins_url_prefix }} login --username {{ jenkins_admin_username }} --password {{ jenkins_admin_password }}"
-      ignore_errors: true
-    - include: "jenkins-create-job.yml job_name={{ item[:-4] }}"
+#    - name: login
+#      command: "java -jar /opt/jenkins-cli.jar -s http://localhost:{{ jenkins_http_port }}/{{ jenkins_url_prefix }} login --username {{ jenkins_admin_username }} --password {{ jenkins_admin_password }}"
+#      ignore_errors: true
+    - include: "jenkins-create-job.yml job_name={{ item[:-4] }} job_file={{ jenkins_root }}/{{ job_name | basename }}.xml"
       with_items: "{{ jenkins_job_examples }}"
     ## FIXME! how to be idempotent
       ignore_errors: true
   when: jenkins_job_examples is defined and jenkins_job_examples != []
+- block:
+    - include: "jenkins-create-job.yml job_name={{ item[:-4] | basename }} job_file={{ item }}"
+      with_items: "{{ jenkins_job_local_examples }}"
+      ignore_errors: true
+  when: jenkins_job_local_examples is defined and jenkins_job_local_examples != []
 
 - name: set configuration for nginx as reverse proxy
   template: src=nginx.conf.j2 dest=/etc/nginx/sites-available/jenkins mode=0644 backup=yes
