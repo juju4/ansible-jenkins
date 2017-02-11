@@ -2,8 +2,11 @@
 
 - hosts: all
 #- hosts: test-kitchen
-#  vars:
-#    - a:
+  vars:
+    - jenkins_plugins:
+        - checkstyle
+        - git
+        - rebuild
   roles:
     - juju4.jenkins
 
