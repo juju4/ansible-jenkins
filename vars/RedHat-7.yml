@@ -3,6 +3,7 @@
 jenkins_extra_pkg:
     - monit
     - crontabs
+    - libxml2
 
 jenkins_user_sshkeytypes:
     - rsa

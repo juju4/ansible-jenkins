@@ -2,6 +2,7 @@
 
 jenkins_extra_pkg:
     - monit
+    - libxml2-utils
 
 jenkins_user_sshkeytypes:
     - rsa
