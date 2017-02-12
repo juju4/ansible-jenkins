@@ -43,6 +43,13 @@ describe command('java -jar /opt/jenkins-cli.jar -s http://127.0.0.1:8888/jenkin
   its(:exit_status) { should eq 0 }
 end
 
+describe file('/var/log/jenkins/jenkins.log') do
+  it { should be_readable }
+  its(:content) { should_not match /SEVERE: / }
+  its(:content) { should_not match /WARNING: Could not intialize the host network interface on nullbecause of an error:/ }
+  its(:content) { should_not match /WARNING: CLI authentication failure/ }
+end
+
 #java -jar /opt/jenkins-cli.jar -s http://127.0.0.1:8888 login --username admin --password admin
 #java -jar /opt/jenkins-cli.jar -s http://127.0.0.1:8888 get-job test-uptime | tee /vagrant/job-test-uptime.xml
 #java -jar /opt/jenkins-cli.jar -s http://127.0.0.1:8888 create-job test-uptime < /vagrant/job-test-uptime.xml

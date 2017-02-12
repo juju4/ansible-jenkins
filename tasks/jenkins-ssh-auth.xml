@@ -1,0 +1,32 @@
+---
+## require https://github.com/cmprescott/ansible-xml
+
+- name: retrieve jenkins user ssh key
+  command: "cat {{ jenkins_root }}/.ssh/id_rsa.pub"
+  register: jenkinskey
+  changed_when: false
+  ignore_errors: true
+
+- name: add local jenkins user ssh key field
+  xml:
+    file: "{{ jenkins_root }}/users/admin/config.xml"
+    xpath: /user/properties
+    add_children:
+      - org.jenkinsci.main.modules.cli.auth.ssh.UserPropertyImpl: ''
+## this, is not working
+#      - "<org.jenkinsci.main.modules.cli.auth.ssh.UserPropertyImpl><authorizedKeys>{{ jenkinskey.stdout | default('') }}</authorizedKeys></org.jenkinsci.main.modules.cli.auth.ssh.UserPropertyImpl>"
+  when: jenkinskey is defined and jenkinskey.stdout is defined and jenkinskey.stdout != ''
+
+- name: add local jenkins user ssh key to jenkins2
+  xml:
+    file: "{{ jenkins_root }}/users/admin/config.xml"
+    xpath: /user/properties/org.jenkinsci.main.modules.cli.auth.ssh.UserPropertyImpl
+    add_children:
+      - authorizedKeys: "{{ jenkinskey.stdout | default('') }}"
+  when: jenkinskey is defined and jenkinskey.stdout is defined and jenkinskey.stdout != ''
+  register: sshconfig
+
+- name: restart jenkins to load ssh keys
+  service: name=jenkins state=restarted
+  when: sshconfig.changed
+

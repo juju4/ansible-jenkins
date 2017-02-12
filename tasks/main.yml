@@ -36,6 +36,7 @@
 - name: check permissions of secrets directory
   file: "dest={{ jenkins_root }}/secrets state=directory mode=0700"
 
+#- debug: var=jenkins_job_examples
 - block:
     - name: upload job examples
       template: "src={{ item }} dest={{ jenkins_root }}/{{ item | basename }} mode=0644 backup=yes"
@@ -48,6 +49,7 @@
     ## FIXME! how to be idempotent
       ignore_errors: true
   when: jenkins_job_examples is defined and jenkins_job_examples != []
+#- debug: var=jenkins_job_local_examples
 - block:
     - include: "jenkins-create-job.yml job_name={{ item[:-4] | basename }} job_file={{ item }}"
       with_items: "{{ jenkins_job_local_examples }}"
@@ -66,6 +68,8 @@
   file: dest=/etc/nginx/sites-enabled/default state=absent
   notify:
     - restart nginx
+
+- include: jenkins-ssh-auth.xml
 
 - include: monit.yml
 

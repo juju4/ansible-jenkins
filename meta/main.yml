@@ -30,4 +30,5 @@ dependencies:
 #  - geerlingguy.gitlab
 ## use either gitlab omnibus CE, either gitlab/ubuntu16.04 but it is broken...
 #  - gitlab
-
+## configure ssh auth
+  - cmprescott.xml
