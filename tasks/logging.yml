@@ -4,7 +4,7 @@
   template: src=rsyslog-ufw.conf.j2 dest=/etc/rsyslog.d/49-ufw.conf mode=0644
   notify:
     - restart rsyslog
-## FIXME! FAILED! => {"changed": false, "failed": true, "msg": "IOError: [Errno 2] No such file or directory: u'/tmp/kitchen/logrotate-nfsen.j2'"}
+
 - name: add logrotate configuration for ufw.log
   template: src=logrotate-ufw.j2 dest=/etc/logrotate.d/ufw mode=0644
 

@@ -7,6 +7,7 @@
         - checkstyle
         - git
         - rebuild
+    - jenkins_java_options: "-Djenkins.install.runSetupWizard=false -Dmail.smtp.starttls.enable=true -Dhudson.DNSMultiCast.disabled=true -Dhudson.udp=-1 -Dhudson.model.DirectoryBrowserSupport.CSP=\\\"sandbox; default-src 'self'; img-src 'self'; style-src 'self' nvd3.org cdn.rawgit.com; script-src 'self' d3js.org nvd3.org cdn.rawgit.com\\\""
   roles:
     - juju4.jenkins
 

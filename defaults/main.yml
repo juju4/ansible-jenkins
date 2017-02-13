@@ -33,6 +33,7 @@ jenkins_public_port: 9091
 jenkins_job_examples: []
 ## those are on remote target
 jenkins_job_local_examples: []
+jenkins_view_local_examples: []
 
 ## NOT SUPPORTED
 #jenkins_gitlabce_combined: false
