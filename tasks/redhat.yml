@@ -7,6 +7,14 @@
     - subversion
     - graphviz
 
+- name: yum | jenkins dependencies - extra
+  yum: name={{item}} state=present
+  with_items:
+    - "{{ jenkins_extra_pkg }}"
+
+- name: RedHat | install manually python lxml
+  pip: name=lxml state=present
+
 - block:
     - name: review nginx.pid location - systemd
       replace: dest=/etc/nginx/nginx.conf regexp='/var/run/nginx.pid' replace='/run/nginx.pid' backup=yes

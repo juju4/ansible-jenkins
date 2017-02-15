@@ -2,7 +2,9 @@
 
 jenkins_extra_pkg:
     - monit
+## if using xml like ansible xml module
     - libxml2-utils
+    - python-lxml
 
 jenkins_user_sshkeytypes:
     - rsa
