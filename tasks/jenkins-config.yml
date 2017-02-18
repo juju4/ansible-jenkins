@@ -67,6 +67,7 @@
       command: "xmllint --xpath '/hudson/markupFormatter' {{ jenkins_root }}/config.xml"
       register: jenkinskeycfg2
       changed_when: false
+      failed_when: false
 #      ignore_errors: true
     - debug: var=jenkinskeycfg2
 
