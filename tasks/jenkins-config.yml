@@ -111,7 +111,7 @@
         file: "{{ jenkins_root }}/config.xml"
         xpath: /hudson/crumbIssuer
         add_children:
-          - excludeClientIPFromCrumb: false
+          - excludeClientIPFromCrumb: 'false'
       when: (jenkinskeycfg3 is not defined or (jenkinskeycfg3 is defined and (jenkinskeycfg3.stdout == '' or jenkinskeycfg3.stdout != jenkinskey.stdout )))
       register: j8
 
