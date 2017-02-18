@@ -31,7 +31,9 @@
       command: "xmllint --xpath '/hudson/markupFormatter' {{ jenkins_root }}/config.xml"
       register: jenkinskeycfg1
       changed_when: false
-      ignore_errors: true
+      failed_when: false
+#      ignore_errors: true
+    - debug: var=jenkinskeycfg1
 
 ## not idempotent and cumulative... https://github.com/cmprescott/ansible-xml/issues/91
     - name: add markupFormatter tree
@@ -65,7 +67,8 @@
       command: "xmllint --xpath '/hudson/markupFormatter' {{ jenkins_root }}/config.xml"
       register: jenkinskeycfg2
       changed_when: false
-      ignore_errors: true
+#      ignore_errors: true
+    - debug: var=jenkinskeycfg2
 
 ## not idempotent and cumulative... https://github.com/cmprescott/ansible-xml/issues/91
     - name: add markupFormatter tree
