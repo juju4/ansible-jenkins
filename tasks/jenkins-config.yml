@@ -127,6 +127,7 @@
     dest: "{{ jenkins_root }}/secrets/slave-to-master-security-kill-switch"
     line: "{{ jenkins_SlaveToMasterAccessControl | lower }}"
     backup: yes
+    create: yes
 
 - name: restart jenkins to load ssh keys
   service: name=jenkins state=restarted
