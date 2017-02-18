@@ -1,0 +1,90 @@
+---
+
+- name: configure jenkins denyAnonymousReadAccess
+  xml:
+    file: "{{ jenkins_root }}/config.xml"
+    xpath: /hudson/authorizationStrategy/denyAnonymousReadAccess
+    value: "{{ jenkins_denyAnonymousReadAccess | lower }}"
+  register: j1
+
+- name: configure jenkins disableSignup
+  xml:
+    file: "{{ jenkins_root }}/config.xml"
+    xpath: /hudson/securityRealm/disableSignup
+    value: "{{ jenkins_disableSignup | lower }}"
+  register: j2
+
+- name: configure jenkins slaveAgentPort
+  xml:
+    file: "{{ jenkins_root }}/config.xml"
+    xpath: /hudson/slaveAgentPort
+    value: "{{ jenkins_slaveAgentPort | default('0') }}"
+  register: j3
+
+- set_fact:
+    j_restart: true
+  when: j1.changed or j2.changed or j3.changed
+
+- block:
+
+    - name: check if existing markupFormatter
+      command: "xmllint --xpath '/hudson/markupFormatter' {{ jenkins_root }}/config.xml"
+      register: jenkinskeycfg1
+      changed_when: false
+      ignore_errors: true
+
+## not idempotent and cumulative... https://github.com/cmprescott/ansible-xml/issues/91
+    - name: add markupFormatter tree
+      xml:
+        file: "{{ jenkins_root }}/config.xml"
+        xpath: /hudson
+        add_children:
+          - markupFormatter:
+              class: "hudson.markup.RawHtmlMarkupFormatter"
+              plugin: "antisamy-markup-formatter@1.5"
+      when: (jenkinskeycfg1 is not defined or (jenkinskeycfg1 is defined and (jenkinskeycfg1.stdout == '' or jenkinskeycfg1.stdout != jenkinskey.stdout )))
+      register: j4
+
+    - name: add disableSyntaxHighlighting to markupFormatter tree
+      xml:
+        file: "{{ jenkins_root }}/config.xml"
+        xpath: /hudson/markupFormatter
+        add_children:
+          - disableSyntaxHighlighting: false
+      when: (jenkinskeycfg1 is not defined or (jenkinskeycfg1 is defined and (jenkinskeycfg1.stdout == '' or jenkinskeycfg1.stdout != jenkinskey.stdout )))
+      register: j5
+
+    - set_fact:
+        j_restart: true
+      when: j4.changed or j5.changed
+
+  when: jenkins_safehtml_description
+- block:
+
+    - name: check if existing markupFormatter
+      command: "xmllint --xpath '/hudson/markupFormatter' {{ jenkins_root }}/config.xml"
+      register: jenkinskeycfg2
+      changed_when: false
+      ignore_errors: true
+
+## not idempotent and cumulative... https://github.com/cmprescott/ansible-xml/issues/91
+    - name: add markupFormatter tree
+      xml:
+        file: "{{ jenkins_root }}/config.xml"
+        xpath: /hudson
+        add_children:
+          - markupFormatter:
+              class: "hudson.markup.EscapedMarkupFormatter"
+      when: (jenkinskeycfg2 is not defined or (jenkinskeycfg2 is defined and (jenkinskeycfg2.stdout == '' or jenkinskeycfg2.stdout != jenkinskey.stdout )))
+      register: j6
+
+    - set_fact:
+        j_restart: true
+      when: j6.changed
+
+  when: not jenkins_safehtml_description
+
+- name: restart jenkins to load ssh keys
+  service: name=jenkins state=restarted
+  when: j_restart is defined and j_restart
+

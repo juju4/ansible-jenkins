@@ -23,8 +23,11 @@
   template: "src=gitconfig.j2 dest={{ jenkins_root }}/.gitconfig mode=0644 owner=jenkins group=jenkins backup=yes"
   when: jenkins_git_email is defined
 
-- name: configure jenkins config
-  template: "src=jenkins-config.xml.j2 dest={{ jenkins_root }}/config.xml mode=0644 owner=jenkins group=jenkins backup=yes"
+## template task not idempotent. how to change default config, preserve local changes like views. xml module?
+#- name: configure jenkins config
+#  template: "src=jenkins-config.xml.j2 dest={{ jenkins_root }}/config.xml mode=0644 owner=jenkins group=jenkins backup=yes"
+- include: jenkins-config.yml
+
 - name: configure jenkins smtp server
   template: "src=hudson.tasks.Mailer.xml.j2 dest={{ jenkins_root }}/hudson.tasks.Mailer.xml mode=0644 owner=jenkins group=jenkins backup=yes"
   when: jenkins_smtphost is defined and jenkins_smtphost != ""
