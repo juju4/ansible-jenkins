@@ -86,6 +86,48 @@
 
   when: not jenkins_safehtml_description
 
+
+- block:
+
+    - name: check if existing crumbIssuer
+      command: "xmllint --xpath '/hudson/crumbIssuer' {{ jenkins_root }}/config.xml"
+      register: jenkinskeycfg3
+      changed_when: false
+      failed_when: false
+    - debug: var=jenkinskeycfg3
+
+    - name: add crumbIssuer tree
+      xml:
+        file: "{{ jenkins_root }}/config.xml"
+        xpath: /hudson
+        add_children:
+          - crumbIssuer:
+              class: "hudson.security.csrf.DefaultCrumbIssuer"
+      when: (jenkinskeycfg3 is not defined or (jenkinskeycfg3 is defined and (jenkinskeycfg3.stdout == '' or jenkinskeycfg3.stdout != '<crumbIssuer class="hudson.security.csrf.DefaultCrumbIssuer">' )))
+      register: j7
+
+    - name: add excludeClientIPFromCrumb to crumbIssuer tree
+      xml:
+        file: "{{ jenkins_root }}/config.xml"
+        xpath: /hudson/crumbIssuer
+        add_children:
+          - excludeClientIPFromCrumb: false
+      when: (jenkinskeycfg3 is not defined or (jenkinskeycfg3 is defined and (jenkinskeycfg3.stdout == '' or jenkinskeycfg3.stdout != jenkinskey.stdout )))
+      register: j8
+
+    - set_fact:
+        j_restart: true
+      when: j7.changed or j8.changed
+
+  when: jenkins_csrf_crumb
+
+## https://wiki.jenkins-ci.org/display/JENKINS/Slave+To+Master+Access+Control
+- name: configure Slave To Master Access Control
+  lineinfile:
+    dest: "{{ jenkins_root }}/secrets/slave-to-master-security-kill-switch"
+    line: "{{ jenkins_SlaveToMasterAccessControl | lower }}"
+    backup: yes
+
 - name: restart jenkins to load ssh keys
   service: name=jenkins state=restarted
   when: j_restart is defined and j_restart
