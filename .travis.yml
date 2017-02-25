@@ -7,10 +7,10 @@ env:
 #    version: 6
 #    init: /sbin/init
 #    run_opts: ""
-  - distribution: centos
-    version: 7
-    init: /usr/lib/systemd/systemd
-    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
+#  - distribution: centos
+#    version: 7
+#    init: /usr/lib/systemd/systemd
+#    run_opts: "--privileged --volume=/sys/fs/cgroup:/sys/fs/cgroup:ro"
   - distribution: ubuntu
     version: 16.04
     init: /lib/systemd/systemd
@@ -60,8 +60,8 @@ script:
   - 'sudo docker exec --tty "$(cat ${container_id})" env TERM=xterm ansible-playbook /etc/ansible/roles/juju4.jenkins/test/integration/default/default.yml -vv'
 
   # Debug
-  - 'sudo docker exec --tty "$(cat ${container_id})" systemctl status jenkins.service'
-  - 'sudo docker exec --tty "$(cat ${container_id})" journalctl -xe'
+#  - 'sudo docker exec --tty "$(cat ${container_id})" systemctl status jenkins.service || true'
+#  - 'sudo docker exec --tty "$(cat ${container_id})" journalctl -xe || true'
 
   # Test role idempotence.
   - >
