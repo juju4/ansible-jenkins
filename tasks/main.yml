@@ -87,7 +87,7 @@
 #- include: dashing.yml
 
 - include: firewall-ufw.yml
-  when: jenkins_ufw is defined and jenkins_ufw and not (ansible_virtualization_type is defined and (ansible_virtualization_type == "lxc" or ansible_virtualization_type == "docker"))
+  when: jenkins_ufw is defined and jenkins_ufw and not (ansible_virtualization_type is defined and ansible_virtualization_type == "docker")
 
 ## we enforce that jenkins is available at the end of the role and it is slow start so...
 - meta: flush_handlers
