@@ -1,5 +1,9 @@
 FROM centos:7
 
+## https://github.com/docker/docker/issues/7459
+VOLUME /sys/fs/cgroup /run /tmp
+ENV container=docker
+
 # Install systemd -- See https://hub.docker.com/_/centos/
 RUN yum -y swap -- remove fakesystemd -- install systemd systemd-libs
 RUN yum -y update; yum clean all; \

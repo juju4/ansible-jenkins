@@ -10,3 +10,11 @@ jenkins_extra_pkg:
 jenkins_user_sshkeytypes:
     - rsa
     - ed25519
+
+www_user: nginx
+nginx_svc: nginx
+#nginx_confdir: /etc/nginx/default.d
+nginx_confdir: /etc/nginx/conf.d
+nginx_sitedir: /etc/nginx/conf.d
+nginx_default: /etc/nginx/conf.d/default.conf
+nginx_conf: /etc/nginx/nginx.conf

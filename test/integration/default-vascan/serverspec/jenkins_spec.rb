@@ -21,7 +21,11 @@ describe port(8888) do
   it { should be_listening }
 end
 
+describe command('java -jar /opt/jenkins-cli.jar -s http://localhost:8888/ login --username admin --password admin'), :if => os[:family] == 'ubuntu' && os[:release] == '16.04' do
+  its(:exit_status) { should eq 0 }
+end
 describe command('java -jar /opt/jenkins-cli.jar -s http://127.0.0.1:8888/ version --username admin --password admin'), :if => os[:family] == 'ubuntu' && os[:release] == '16.04' do
+  its(:stdout) { should match /2\.\d+/ }
   its(:exit_status) { should eq 0 }
 end
 describe command('java -jar /opt/jenkins-cli.jar -s http://127.0.0.1:8888/ list-plugins --username admin --password admin'), :if => os[:family] == 'ubuntu' && os[:release] == '16.04' do
@@ -37,6 +41,13 @@ describe command('java -jar /opt/jenkins-cli.jar -s http://127.0.0.1:8888/jenkin
   its(:stdout) { should match /git/ }
   its(:stdout) { should match /checkstyle/ }
   its(:exit_status) { should eq 0 }
+end
+
+describe file('/var/log/jenkins/jenkins.log') do
+  it { should be_readable }
+  its(:content) { should_not match /SEVERE: / }
+  its(:content) { should_not match /WARNING: Could not intialize the host network interface on nullbecause of an error:/ }
+  its(:content) { should_not match /WARNING: CLI authentication failure/ }
 end
 
 #java -jar /opt/jenkins-cli.jar -s http://127.0.0.1:8888 login --username admin --password admin

@@ -8,7 +8,7 @@
 
 - name: Include version-specific variables for Ubuntu.
   include_vars: "{{ ansible_distribution }}-{{ ansible_distribution_version }}.yml"
-  when: ansible_distribution == 'Ubuntu'
+  when: ansible_os_family == 'Debian'
 - name: Include version-specific variables for RedHat
   include_vars: "RedHat-{{ ansible_distribution_version.split('.')[0] }}.yml"
   when: ansible_os_family == "RedHat" or ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
@@ -58,17 +58,19 @@
   when: jenkins_view_local_examples is defined and jenkins_view_local_examples != []
 
 - name: set configuration for nginx as reverse proxy
-  template: src=nginx.conf.j2 dest=/etc/nginx/sites-available/jenkins mode=0644 backup=yes
+  template: "src=nginx.conf.j2 dest={{ nginx_sitedir }}/jenkins mode=0644 backup=yes"
   notify:
     - restart nginx
 - name: enabled configuration for nginx as reverse proxy
-  file: src=/etc/nginx/sites-available/jenkins dest=/etc/nginx/sites-enabled/jenkins state=link
+  file: "src={{ nginx_sitedir }}/jenkins dest=/etc/nginx/sites-enabled/jenkins state=link"
   notify:
     - restart nginx
+  when: ansible_os_family == 'Debian'
 - name: disable default configuration for nginx
   file: dest=/etc/nginx/sites-enabled/default state=absent
   notify:
     - restart nginx
+  when: ansible_os_family == 'Debian'
 
 - include: jenkins-ssh-auth.xml
 
@@ -85,7 +87,7 @@
 #- include: dashing.yml
 
 - include: firewall-ufw.yml
-  when: jenkins_ufw is defined and jenkins_ufw
+  when: jenkins_ufw is defined and jenkins_ufw and not (ansible_virtualization_type is defined and (ansible_virtualization_type == "lxc" or ansible_virtualization_type == "docker"))
 
 ## we enforce that jenkins is available at the end of the role and it is slow start so...
 - meta: flush_handlers

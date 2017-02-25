@@ -10,3 +10,9 @@ jenkins_user_sshkeytypes:
     - rsa
     - ed25519
 
+www_user: www-data
+nginx_svc: nginx
+nginx_confdir: /etc/nginx/conf.d
+nginx_sitedir: /etc/nginx/sites-available
+nginx_conf: /etc/nginx/nginx.conf
+nginx_default: /etc/nginx/sites-available/default

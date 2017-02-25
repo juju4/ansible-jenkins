@@ -31,9 +31,7 @@ For example
 ## Variables
 
 ```
-## FIXME! Default does not seem to apply to meta dependencies. vars do
-
-## gitlab is taking 8080
+## possible gitlab is taking 8080
 jenkins_http_port: 8888
 
 jenkins_plugins:
@@ -48,24 +46,24 @@ jenkins_git_user: myuser
 
 #jenkins_smtphost: 127.0.0.1
 #jenkins_smtp_defaultdomain: example.com
-
-docker_users:
-    - jenkins
 ```
 
 ## Continuous integration
 
 This role has a travis basic test (for github), more advanced with kitchen and also a Vagrantfile (test/vagrant).
+Default kitchen config (.kitchen.yml) is lxd-based, while (.kitchen.vagrant.yml) is vagrant/virtualbox based.
 
 Once you ensured all necessary roles are present, You can test with:
 ```
-$ cd /path/to/roles/jenkins
+$ gem install kitchen-ansible kitchen-lxd_cli kitchen-sync kitchen-vagrant
+$ cd /path/to/roles/juju4.jenkins
 $ kitchen verify
 $ kitchen login
+$ KITCHEN_YAML=".kitchen.vagrant.yml" kitchen verify
 ```
 or
 ```
-$ cd /path/to/roles/jenkins/test/vagrant
+$ cd /path/to/roles/juju4.jenkins/test/vagrant
 $ vagrant up
 $ vagrant ssh
 ```
