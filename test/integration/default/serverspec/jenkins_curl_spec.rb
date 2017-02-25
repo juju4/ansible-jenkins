@@ -18,7 +18,7 @@ end
 describe command('curl -vkL http://localhost:9091/github-webhook/') do
 #  its('stdout') { should match "java.lang.Exception: Method POST required" }
   its('stdout') { should_not match "404 Not Found" }
-  its('stdout') { should_not match "Authentication required" }
+  its('stdout') { should match "Authentication required" }
 end
 
 ## https://wiki.jenkins-ci.org/display/JENKINS/Jenkins+says+my+reverse+proxy+setup+is+broken (how to get api_token in cli?)
