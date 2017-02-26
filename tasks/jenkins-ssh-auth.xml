@@ -8,7 +8,7 @@
   ignore_errors: true
 
 - name: check if existing ssh keys
-  command: "xmllint --xpath '/user/properties/org.jenkinsci.main.modules.cli.auth.ssh.UserPropertyImpl/authorizedKeys/text()' {{ jenkins_root }}/users/admin/config.xml"
+  command: "xmllint --xpath '/user/properties/org.jenkinsci.main.modules.cli.auth.ssh.UserPropertyImpl/authorizedKeys/text()' {{ jenkins_root }}/users/{{ jenkins_admin_username }}/config.xml"
   register: jenkinskeycfg
   changed_when: false
   ignore_errors: true
@@ -16,7 +16,7 @@
 ## not idempotent and cumulative... https://github.com/cmprescott/ansible-xml/issues/91
 - name: add local jenkins user ssh key field
   xml:
-    file: "{{ jenkins_root }}/users/admin/config.xml"
+    file: "{{ jenkins_root }}/users/{{ jenkins_admin_username }}/config.xml"
     xpath: /user/properties
     add_children:
       - org.jenkinsci.main.modules.cli.auth.ssh.UserPropertyImpl: ''
@@ -26,7 +26,7 @@
 
 - name: add local jenkins user ssh key to jenkins2
   xml:
-    file: "{{ jenkins_root }}/users/admin/config.xml"
+    file: "{{ jenkins_root }}/users/{{ jenkins_admin_username }}/config.xml"
     xpath: /user/properties/org.jenkinsci.main.modules.cli.auth.ssh.UserPropertyImpl
     add_children:
       - authorizedKeys: "{{ jenkinskey.stdout | default('') }}"
