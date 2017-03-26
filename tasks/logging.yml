@@ -1,5 +1,10 @@
 ---
 
+- name: get rsyslog version
+  command: "rsyslogd -v | awk -F'[ ,]' '/rsyslogd/ { print $2 }'"
+  changed_when: false
+  register: rsyslog_v
+
 - name: ensure /etc/rsyslog.d exists
   file: dest=/etc/rsyslog.d state=directory mode=0755
 

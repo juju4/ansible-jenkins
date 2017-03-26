@@ -57,6 +57,15 @@
       with_items: "{{ jenkins_view_local_examples }}"
   when: jenkins_view_local_examples is defined and jenkins_view_local_examples != []
 
+- block:
+    - set_fact:
+        certificate_cn: "{{ ansible_fqdn }}"
+    - include: certificate-selfsigned.yml
+    - set_fact:
+        jenkins_nginx_ssl_key: "{{ ssl_privatedir }}/{{ ansible_fqdn }}.key"
+        jenkins_nginx_ssl_cert: "{{ ssl_dir }}/{{ ansible_fqdn }}.crt"
+  when: jenkins_public_https and jenkins_nginx_ssl_cert == ''
+
 - name: set configuration for nginx as reverse proxy
   template: "src=nginx.conf.j2 dest={{ nginx_sitedir }}/jenkins mode=0644 backup=yes"
   notify:

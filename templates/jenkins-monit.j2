@@ -6,7 +6,14 @@
     if cpu > 60% for 2 cycles then alert
     if cpu > 80% for 5 cycles then restart
    if 4 restarts within 12 cycles then timeout
-   if failed host localhost port 8888 with protocol http and request "/" with timeout 25 seconds for 4 times within 5 cycles then restart
+## java. by default, in http will result in 403/unauthenticated so fails
+   if failed
+        host localhost port 8888
+#        with protocol http and request "/"
+        with timeout 25 seconds for 4 times within 5 cycles
+     then restart
+## nginx
+#   if failed host localhost port {{ jenkins_public_port }} with protocol http and request "/" with timeout 25 seconds for 4 times within 5 cycles then restart
    depend java_bin
 #   depend jenkins_war
    depend jenkins_rc

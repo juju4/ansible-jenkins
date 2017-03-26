@@ -16,3 +16,7 @@ nginx_confdir: /etc/nginx/conf.d
 nginx_sitedir: /etc/nginx/sites-available
 nginx_conf: /etc/nginx/nginx.conf
 nginx_default: /etc/nginx/sites-available/default
+
+ssl_user: ssl-cert
+ssl_dir: /etc/ssl
+ssl_privatedir: /etc/ssl/private

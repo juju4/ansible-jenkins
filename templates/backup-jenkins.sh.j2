@@ -8,17 +8,19 @@ umask 022
 
 date=`date +%Y-%m-%d`
 dest={{ backupdir }}
+f=$dest/backup-jenkins-$date.tar.gz
 
 dirs="{{ jenkins_root }} \
     /var/log/jenkins \
     "
 
 ## exclude workspaces and plugins ?
-tar czf $dest/backup-jenkins.tar-$date.gz \
+tar czf $f \
     --exclude 'plugins/*/*' \
     --exclude 'config-history/*' \
     --exclude cache \
     --exclude workspace \
     $dirs
-tar tzf $dest/backup-jenkins.tar-$date.gz > /dev/null
+tar tzf $f > /dev/null
+openssl dgst -sha512 $f > $f.distinfo
 

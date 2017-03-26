@@ -32,3 +32,5 @@ dependencies:
 #  - gitlab
 ## configure ssh auth
   - cmprescott.xml
+## https?
+  - juju4.harden-nginx

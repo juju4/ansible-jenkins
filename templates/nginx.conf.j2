@@ -11,6 +11,10 @@ server {
 
 {% if jenkins_public_https is defined and jenkins_public_https %}
     listen {{ jenkins_public_port }} ssl;
+{#    include /etc/nginx/harden-nginx-https; #}
+    ssl_certificate {{ jenkins_nginx_ssl_cert }};
+    ssl_certificate_key {{ jenkins_nginx_ssl_key }};
+    add_header Strict-Transport-Security "max-age=63072000; includeSubdomains; preload";
 {% else %}
     listen {{ jenkins_public_port }};
 {% endif %}
@@ -59,6 +63,8 @@ server {
       proxy_hide_header       x-jenkins-session;
 
       add_header              X-Frame-Options SAMEORIGIN;
+      add_header              X-Content-Type-Options nosniff;
+      add_header              X-XSS-Protection "1; mode=block";
 
 {% if jenkins_public_https is defined %}
       # Rewrite HTTPS requests from WAN to HTTP requests on LAN
