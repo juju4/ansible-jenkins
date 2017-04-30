@@ -1,11 +1,5 @@
 ---
 
-- name: use public IP address as hostname/external url
-  set_fact:
-    jenkins_public_hostname: "{{ ansible_eth0.ipv4.address }}"
-    gitlab_external_url: "http://{{ ansible_eth0.ipv4.address }}:{{ gitlab_nginx_listen_port }}/"
-  when: ansible_eth0.ipv4.address is defined
-
 - name: Include version-specific variables for Ubuntu.
   include_vars: "{{ ansible_distribution }}-{{ ansible_distribution_version }}.yml"
   when: ansible_os_family == 'Debian'

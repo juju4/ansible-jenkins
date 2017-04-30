@@ -25,6 +25,8 @@ jenkins_SlaveToMasterAccessControl: true
 ## nginx reverse proxy
 #jenkins_public_hostname: jenkins.domain.tld
 #jenkins_public_hostname: x.y.z.1
+jenkins_public_hostname: "{{ ansible_eth0.ipv4.address | default('localhost') }}"
+
 ## do we use www.domain.tld/jenkins/ ?
 jenkins_public_subfolder: false
 #jenkins_public_subfolder: true
@@ -39,6 +41,7 @@ jenkins_view_local_examples: []
 
 ## NOT SUPPORTED
 #jenkins_gitlabce_combined: false
+#gitlab_external_url: "http://{{ ansible_eth0.ipv4.address }}:{{ gitlab_nginx_listen_port }}/"
 
 ## firewall ?
 #jenkins_ufw: false
