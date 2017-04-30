@@ -25,7 +25,8 @@ jenkins_SlaveToMasterAccessControl: true
 ## nginx reverse proxy
 #jenkins_public_hostname: jenkins.domain.tld
 #jenkins_public_hostname: x.y.z.1
-jenkins_public_hostname: "{{ ansible_eth0.ipv4.address | default('localhost') }}"
+#jenkins_public_hostname: "{{ ansible_eth0.ipv4.address }}"
+jenkins_public_hostname: "localhost"
 
 ## do we use www.domain.tld/jenkins/ ?
 jenkins_public_subfolder: false
@@ -46,6 +47,8 @@ jenkins_view_local_examples: []
 ## firewall ?
 #jenkins_ufw: false
 jenkins_ufw: true
+jenkins_ufw_if: eth0
+#jenkins_ufw_if: enp0s3
 ## only affect incoming traffic
 #jenkins_ufw_default_policy: allow
 jenkins_ufw_default_policy: deny

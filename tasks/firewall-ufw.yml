@@ -20,11 +20,20 @@
   with_items: "{{ jenkins_ufw_access_with_log }}"
 
 - name: ufw | allow incoming traffic for defined ports
-  ufw: rule=allow interface=eth0 direction=in to_port={{ item }}
+  ufw:
+    rule: allow
+    interface: "{{ jenkins_ufw_if }}"
+    direction: in
+    to_port: "{{ item }}"
   with_items: "{{ jenkins_ufw_allow_ports_in }}"
 
-- name: ufw | allow eth0 outgoing traffic for defined ports
-  ufw: rule=allow interface=eth0 direction=out to_port={{ item }} log={{ jenkins_ufw_out_logging }}
+- name: ufw | allow {{ jenkins_ufw_if }} outgoing traffic for defined ports
+  ufw:
+    rule: allow
+    interface: "{{ jenkins_ufw_if }}"
+    direction: out
+    to_port: "{{ item }}"
+    log: "{{ jenkins_ufw_out_logging }}"
   with_items: "{{ jenkins_ufw_allow_ports_out }}"
 
 - name: ufw | allow all outgoing traffic for defined interfaces
