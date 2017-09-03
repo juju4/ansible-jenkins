@@ -3,6 +3,6 @@
 - hosts: all
   roles:
 ## swap can be required on small cloud/vps
-    - swap
-    - jenkins
+    - juju4.swap
+    - juju4.jenkins
 
