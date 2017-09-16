@@ -61,7 +61,7 @@
   when: jenkins_public_https and jenkins_nginx_ssl_cert == ''
 
 - name: set configuration for nginx as reverse proxy
-  template: "src=nginx.conf.j2 dest={{ nginx_sitedir }}/jenkins mode=0644 backup=yes"
+  template: "src=nginx.conf.j2 dest={{ nginx_jenkins_conf }} mode=0644 backup=yes"
   notify:
     - restart nginx
 - name: enabled configuration for nginx as reverse proxy

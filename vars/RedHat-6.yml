@@ -10,3 +10,5 @@ jenkins_extra_pkg:
 jenkins_user_sshkeytypes:
     - rsa
 
+ufw_rulename_ssh: SSH
+nginx_jenkins_conf: "{{ nginx_sitedir }}/jenkins.conf"

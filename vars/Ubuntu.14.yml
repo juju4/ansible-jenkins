@@ -3,3 +3,5 @@
 jenkins_extra_pkg:
     - monit
 
+ufw_rulename_ssh: OpenSSH
+nginx_jenkins_conf: "{{ nginx_sitedir }}/jenkins"
