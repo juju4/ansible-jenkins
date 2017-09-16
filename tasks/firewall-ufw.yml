@@ -5,11 +5,18 @@
 - name: install ufw
   package: name=ufw state=present
 
+- name: ufw | RedHat | ensure enabled
+  ufw: state=enabled
+  when: ansible_os_family == 'RedHat'
+
 - name: ufw | ensure logging medium is enabled
   ufw: logging={{ jenkins_ufw_default_logging }}
 
 - name: ufw | always allow ssh
-  ufw: rule=allow name=OpenSSH log=yes
+  ufw:
+    rule: allow
+    name: "{{ ufw_rulename_ssh }}"
+    log: yes
 
 - name: ufw | allow access from defined networks
   ufw: rule=allow src={{ item }}
