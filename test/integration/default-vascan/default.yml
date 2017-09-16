@@ -25,6 +25,10 @@
     - w3af_scan_output_file: "/tmp/output-w3af.txt"
     - w3af_pull: false
     - w3af_pulldir: tmp/
+  pre_tasks:
+    - set_fact:
+        java_implementation: oracle
+      when: ansible_os_family == "RedHat" and ansible_distribution_version.split('.')[0] == '7'
   roles:
     - juju4.jenkins
     - juju4.w3af

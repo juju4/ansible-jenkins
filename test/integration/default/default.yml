@@ -10,6 +10,10 @@
 ##      hudson.remoting.SynchronousCommandTransport$ReaderThread run\nSEVERE: I/O error in channel Chunked connection to
 ##      https://issues.jenkins-ci.org/browse/JENKINS-35197
     - jenkins_java_options: "-Djenkins.install.runSetupWizard=false -Dmail.smtp.starttls.enable=true -Dhudson.DNSMultiCast.disabled=true -Dhudson.udp=-1 -Dhudson.model.DirectoryBrowserSupport.CSP=\\\"sandbox; default-src 'self'; img-src 'self'; style-src 'self' nvd3.org cdn.rawgit.com; script-src 'self' d3js.org nvd3.org cdn.rawgit.com\\\""
+  pre_tasks:
+    - set_fact:
+        java_implementation: oracle
+      when: ansible_os_family == "RedHat" and ansible_distribution_version.split('.')[0] == '7'
   roles:
     - juju4.jenkins
 
