@@ -21,7 +21,7 @@ nginx_conf: /etc/nginx/nginx.conf
 nginx_jenkins_conf: "{{ nginx_sitedir }}/jenkins.conf"
 
 ssl_user: root
-ssl_dir: /etc/pki/tls
+ssl_dir: /etc/pki/tls/certs
 ssl_privatedir: /etc/pki/tls/private
 
 ufw_rulename_ssh: SSH
