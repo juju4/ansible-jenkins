@@ -1,3 +1,4 @@
+# {{ ansible_managed }}
 ## /etc/aide/aide.conf.d
 {{ jenkins_root }}$ VarDir
 #{{ jenkins_root }}/jobs$ VarDir
