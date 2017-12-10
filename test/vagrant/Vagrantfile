@@ -15,7 +15,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
        #ansible.verbose = "vvvv"
        #ansible.host_key_checking = false
        #ansible.limit = 'all'
-       ansible.sudo = true
+       ansible.become = true
        ansible.extra_vars = { ansible_ssh_user: 'vagrant', jenkins_http_port: 8888, gitlab_external_url: "https://127.0.0.1/" }
        ansible.groups = {
           "myrole" => ["jenkins" ],
