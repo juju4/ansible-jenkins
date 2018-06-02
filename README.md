@@ -12,6 +12,7 @@ You can use jenkinsslave role to setup extra nodes.
 It was tested on the following versions:
  * 2.0
  * 2.2
+ * 2.5
 
 ### Operating systems
 

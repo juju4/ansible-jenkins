@@ -1,0 +1,25 @@
+---
+
+jenkins_extra_pkg:
+    - monit
+## if using xml like ansible xml module
+    - libxml2-utils
+    - python-lxml
+
+jenkins_user_sshkeytypes:
+    - rsa
+    - ed25519
+
+www_user: www-data
+nginx_svc: nginx
+nginx_confdir: /etc/nginx/conf.d
+nginx_sitedir: /etc/nginx/sites-available
+nginx_conf: /etc/nginx/nginx.conf
+nginx_default: /etc/nginx/sites-available/default
+nginx_jenkins_conf: "{{ nginx_sitedir }}/jenkins"
+
+ssl_user: ssl-cert
+ssl_dir: /etc/ssl
+ssl_privatedir: /etc/ssl/private
+
+ufw_rulename_ssh: OpenSSH
