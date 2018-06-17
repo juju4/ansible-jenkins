@@ -24,6 +24,12 @@ server {
 {% endif %}
     server_tokens off;
 
+    # https://chris408.com/post/junkins-helps-you-decrypt-jenkins-passwords/
+    # https://github.com/chris408/junkins/
+    location ~* ^/script.*$ {
+        return 404;
+    }
+
 {% if jenkins_public_subfolder is defined and jenkins_public_subfolder %}
     location ^~ /{{ jenkins_url_prefix }} {
       access_log  /var/log/nginx/jenkins_access.log;
