@@ -25,31 +25,33 @@ describe port(8888) do
   it { should be_listening }
 end
 
-## ERROR: This command is requesting the deprecated -remoting mode. See https://jenkins.io/redirect/cli-command-requires-channel
-## This mode is disabled on the server side for new installations of 2.54+ and 2.46.2
-#describe command("java -jar /opt/jenkins-cli.jar -s #{jenkins_url} login --username #{jenkins_user} --password #{jenkins_pass}"), :if => os[:family] == 'ubuntu' && os[:release] == '16.04' do
+### ERROR: This command is requesting the deprecated -remoting mode. See https://jenkins.io/redirect/cli-command-requires-channel
+### This mode is disabled on the server side for new installations of 2.54+ and 2.46.2
+##describe command("java -jar /opt/jenkins-cli.jar -s #{jenkins_url} login --username #{jenkins_user} --password #{jenkins_pass}"), :if => os[:family] == 'ubuntu' && os[:release] == '16.04' do
+##  its(:exit_status) { should eq 0 }
+##end
+#describe command("java -jar /opt/jenkins-cli.jar -s #{jenkins_url} version --username #{jenkins_user} --password #{jenkins_pass}"), :if => os[:family] == 'ubuntu' && os[:release] == '16.04' do
+#  its(:stdout) { should match /2\.\d+/ }
+#  its(:stderr) { should_not match /ERROR/ }
 #  its(:exit_status) { should eq 0 }
 #end
-describe command("java -jar /opt/jenkins-cli.jar -s #{jenkins_url} version --username #{jenkins_user} --password #{jenkins_pass}"), :if => os[:family] == 'ubuntu' && os[:release] == '16.04' do
-  its(:stdout) { should match /2\.\d+/ }
-  its(:exit_status) { should eq 0 }
-end
-describe command("java -jar /opt/jenkins-cli.jar -s #{jenkins_url} list-plugins --username #{jenkins_user} --password #{jenkins_pass}"), :if => os[:family] == 'ubuntu' && os[:release] == '16.04' do
-  its(:stdout) { should match /rebuild/ }
-  its(:stdout) { should match /git/ }
-  its(:stdout) { should match /junit/ }
-  its(:exit_status) { should eq 0 }
-end
-
-describe command("java -jar /opt/jenkins-cli.jar -s #{jenkins_url}jenkins version --username #{jenkins_user} --password #{jenkins_pass}"), :if => os[:family] == 'ubuntu' && os[:release] == '14.04' do
-  its(:exit_status) { should eq 0 }
-end
-describe command("java -jar /opt/jenkins-cli.jar -s #{jenkins_url}jenkins list-plugins --username #{jenkins_user} --password #{jenkins_pass}"), :if => os[:family] == 'ubuntu' && os[:release] == '14.04' do
-  its(:stdout) { should match /rebuild/ }
-  its(:stdout) { should match /git/ }
-  its(:stdout) { should match /junit/ }
-  its(:exit_status) { should eq 0 }
-end
+#describe command("java -jar /opt/jenkins-cli.jar -s #{jenkins_url} list-plugins --username #{jenkins_user} --password #{jenkins_pass}"), :if => os[:family] == 'ubuntu' && os[:release] == '16.04' do
+#  its(:stdout) { should match /rebuild/ }
+#  its(:stdout) { should match /git/ }
+#  its(:stdout) { should match /junit/ }
+#  its(:stderr) { should_not match /ERROR/ }
+#  its(:exit_status) { should eq 0 }
+#end
+#
+#describe command("java -jar /opt/jenkins-cli.jar -s #{jenkins_url}jenkins version --username #{jenkins_user} --password #{jenkins_pass}"), :if => os[:family] == 'ubuntu' && os[:release] == '14.04' do
+#  its(:exit_status) { should eq 0 }
+#end
+#describe command("java -jar /opt/jenkins-cli.jar -s #{jenkins_url}jenkins list-plugins --username #{jenkins_user} --password #{jenkins_pass}"), :if => os[:family] == 'ubuntu' && os[:release] == '14.04' do
+#  its(:stdout) { should match /rebuild/ }
+#  its(:stdout) { should match /git/ }
+#  its(:stdout) { should match /junit/ }
+#  its(:exit_status) { should eq 0 }
+#end
 
 describe file('/var/log/jenkins/jenkins.log') do
   it { should be_readable }

@@ -4,15 +4,15 @@ require 'serverspec'
 set :backend, :exec
 
 #jenkins_url = 'http://localhost:9091/'
-jenkins_url = 'https://localhost:9091/'
+jenkins_url = 'https://localhost:9091/login'
 curl_arg = '-vkL'
 
 describe command("curl #{curl_arg} #{jenkins_url}"), :if => os[:family] == 'ubuntu' do
 #  its('stdout') { should match /<meta http-equiv='refresh' content='1;url=\/login?from=%2F'\/>/ }
-  its('stdout') { should match /<title>Dashboard \[Jenkins\]<\/title>/ }
-  its('stdout') { should match /Log in<\/a> to create new jobs/ }
+  its('stdout') { should match /<title>Sign in \[Jenkins\]<\/title>/ }
+#  its('stdout') { should match /Log in<\/a> to create new jobs/ }
   its('stderr') { should match /HTTP\/1.1 200 OK/ }
-  its('stderr') { should match /X-Hudson-Theme/ }
+#  its('stderr') { should match /X-Hudson-Theme/ }
   its('stderr') { should match /subject: C=US,ST=CA,L=San Francisco,O=Ansible,CN=default-/ }
 end
 
