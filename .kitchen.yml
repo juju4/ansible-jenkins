@@ -32,7 +32,7 @@ platforms:
 ## FIXME!
 #TASK [geerlingguy.nginx : Ensure nginx is started and enabled to start at boot.] ***
 #       fatal: [localhost]: FAILED! => {"changed": false, "failed": true, "msg": "Job for nginx.service failed because a timeout was exceeded. See \"systemctl status nginx.service\" and \"journalctl -xe\" for details.\n"}
-#  - name: centos-7
+  - name: centos-7
 ## FIXME!
 #TASK [geerlingguy.nginx : Ensure nginx is started and enabled to start at boot.] ***
 #       fatal: [localhost]: FAILED! => {"changed": false, "failed": true, "msg": "nginx: [emerg] bind() to 0.0.0.0:80 failed (98: Address already in use)\nnginx: [emerg] bind() to 0.0.0.0:80 failed (98: Address already in use)\nnginx: [emerg] bind() to 0.0.0.0:80 failed (98: Address already in use)\nnginx: [emerg] bind() to 0.0.0.0:80 failed (98: Address already in use)\nnginx: [emerg] bind() to 0.0.0.0:80 failed (98: Address already in use)\nnginx: [emerg] still could not bind()\n"}
