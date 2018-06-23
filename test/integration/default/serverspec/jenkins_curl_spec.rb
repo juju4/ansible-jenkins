@@ -26,10 +26,10 @@ describe command("curl #{curl_arg} #{jenkins_url}login"), :if => os[:family] == 
 end
 
 ## plugins test
-describe command("curl #{curl_arg} #{jenkins_url}/git/notifyCommit?url=") do
-  its('stdout') { should match "java.lang.Exception: Illegal URL:" }
-  its('stdout') { should_not match "404 Not Found" }
-end
+#describe command("curl #{curl_arg} #{jenkins_url}/git/notifyCommit?url=") do
+#  its('stdout') { should match "java.lang.Exception: Illegal URL:" }
+#  its('stdout') { should_not match "404 Not Found" }
+#end
 #describe command("curl #{curl_arg} #{jenkins_url}/github-webhook/") do
 #  its('stdout') { should match "java.lang.Exception: Method POST required" }
 #  its('stdout') { should_not match "404 Not Found" }
