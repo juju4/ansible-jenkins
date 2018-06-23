@@ -16,7 +16,8 @@ It was tested on the following versions:
 
 ### Operating systems
 
-Tested with vagrant on Ubuntu 14.04, Kitchen test with trusty and centos7
+Tested on Ubuntu 14.04, 16.04 and Centos7.
+Support of 18.04 is pending Java10 support (See below)
 
 ## Example Playbook
 
@@ -117,7 +118,7 @@ https://stackoverflow.com/questions/29527803/eliminating-or-understanding-jetty-
 * ```It appears that your reverse proxy set up is broken.```
 https://wiki.jenkins-ci.org/display/JENKINS/Jenkins+says+my+reverse+proxy+setup+is+broken
 
-
+* Java10 support is [in](https://jenkins.io/blog/2018/06/08/jenkins-java10-hackathon/) [the](https://jenkins.io/blog/2018/06/17/running-jenkins-with-java10-11/) [work](https://issues.jenkins-ci.org/browse/JENKINS-40689).
 
 ## License
 
