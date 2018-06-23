@@ -16,9 +16,13 @@ describe file('/var/lib/jenkins/config.xml') do
   it { should be_readable }
 end
 
-describe process("java") do
+describe process("java"), :if => os[:family] == 'ubuntu' do
   its(:user) { should eq "jenkins" }
   its(:args) { should match /-jar \/usr\/share\/jenkins\/jenkins.war/ }
+end
+describe process("java"), :if => os[:family] == 'redhat' do
+  its(:user) { should eq "jenkins" }
+  its(:args) { should match /-jar \/usr\/lib\/jenkins\/jenkins.war/ }
 end
 
 describe port(8888) do

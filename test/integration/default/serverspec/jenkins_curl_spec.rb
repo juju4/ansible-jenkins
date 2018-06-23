@@ -17,12 +17,14 @@ describe command("curl #{curl_arg} #{jenkins_url}"), :if => os[:family] == 'ubun
 end
 
 describe command("curl #{curl_arg} #{jenkins_url}login"), :if => os[:family] == 'redhat' do
-  its('stdout') { should match /<meta http-equiv='refresh' content='1;url=\/login?from=%2F'\/>/ }
+#  its('stdout') { should match /<meta http-equiv='refresh' content='1;url=\/login?from=%2F'\/>/ }
 #  its('stdout') { should match /<title>Dashboard \[Jenkins\]<\/title>/ }
 #  its('stdout') { should match /Log in<\/a> to create new jobs/ }
+  its('stdout') { should match /<title>Sign in \[Jenkins\]<\/title>/ }
   its('stderr') { should match /HTTP\/1.1 200 OK/ }
-  its('stderr') { should match /X-Hudson-Theme/ }
-  its('stderr') { should match /subject: C=US,ST=CA,L=San Francisco,O=Ansible,CN=default-/ }
+#  its('stderr') { should match /X-Hudson-Theme/ }
+  its('stderr') { should match /issuer: / }
+  its('stderr') { should match /O=Ansible,L=San Francisco,ST=CA,C=US/ }
 end
 
 ## plugins test
