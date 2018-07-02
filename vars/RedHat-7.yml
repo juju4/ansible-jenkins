@@ -6,6 +6,8 @@ jenkins_extra_pkg:
     - libxml2
     - libxslt-devel
     - libxml2-devel
+# serverspec testing
+    - bind-utils
 
 jenkins_user_sshkeytypes:
     - rsa
