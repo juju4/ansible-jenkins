@@ -16,7 +16,7 @@ describe command("curl #{curl_arg} #{jenkins_url}"), :if => os[:family] == 'ubun
   its('stderr') { should match /subject: C=US,ST=CA,L=San Francisco,O=Ansible,CN=default-/ }
 end
 
-describe command("curl #{curl_arg} #{jenkins_url}login"), :if => os[:family] == 'redhat' do
+describe command("curl #{curl_arg} #{jenkins_url}"), :if => os[:family] == 'redhat' do
 #  its('stdout') { should match /<meta http-equiv='refresh' content='1;url=\/login?from=%2F'\/>/ }
 #  its('stdout') { should match /<title>Dashboard \[Jenkins\]<\/title>/ }
 #  its('stdout') { should match /Log in<\/a> to create new jobs/ }
