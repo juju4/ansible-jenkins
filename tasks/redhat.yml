@@ -12,6 +12,12 @@
   with_items:
     - "{{ jenkins_extra_pkg }}"
 
+# https://access.redhat.com/solutions/2216431 rhel/centos7
+- name: yum | ensure latest curl
+  yum:
+    name: curl
+    state: latest
+
 - name: RedHat | install manually python lxml
   pip: name=lxml state=present
 
