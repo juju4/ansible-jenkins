@@ -30,7 +30,7 @@ platforms:
     driver_config:
       network:
         - ["forwarded_port", {guest: 8888, host: 8886}]
-  - name: centos-7.1
+  - name: centos-7.4
     driver_config:
       network:
         - ["forwarded_port", {guest: 8888, host: 8887}]
