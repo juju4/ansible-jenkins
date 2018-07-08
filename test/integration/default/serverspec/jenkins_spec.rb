@@ -56,6 +56,15 @@ end
 #  its(:stdout) { should match /junit/ }
 #  its(:exit_status) { should eq 0 }
 #end
+describe file('/var/lib/jenkins/plugins/rebuild') do
+  it { should be_directory }
+end
+describe file('/var/lib/jenkins/plugins/git') do
+  it { should be_directory }
+end
+describe file('/var/lib/jenkins/plugins/junit') do
+  it { should be_directory }
+end
 
 describe file('/var/log/jenkins/jenkins.log') do
   it { should be_readable }
