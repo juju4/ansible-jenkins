@@ -24,7 +24,7 @@ provisioner:
   ansible_connection: ssh
 
 platforms:
-#  - name: ubuntu-18.04
+  - name: ubuntu-18.04
   - name: ubuntu-16.04
 ## trusty: geerlingguy.java: only 6 or 7. requires 8+
 #  - name: ubuntu-14.04

@@ -118,7 +118,7 @@ https://stackoverflow.com/questions/29527803/eliminating-or-understanding-jetty-
 * ```It appears that your reverse proxy set up is broken.```
 https://wiki.jenkins-ci.org/display/JENKINS/Jenkins+says+my+reverse+proxy+setup+is+broken
 
-* Java10 support is [in](https://jenkins.io/blog/2018/06/08/jenkins-java10-hackathon/) [the](https://jenkins.io/blog/2018/06/17/running-jenkins-with-java10-11/) [work](https://issues.jenkins-ci.org/browse/JENKINS-40689).
+* Java10 support is [in](https://jenkins.io/blog/2018/06/08/jenkins-java10-hackathon/) [the](https://jenkins.io/blog/2018/06/17/running-jenkins-with-java10-11/) [work](https://issues.jenkins-ci.org/browse/JENKINS-40689) = [Java 11 Support Preview is available in Jenkins 2.155+](https://jenkins.io/blog/2018/12/14/java11-preview-availability/), Dec 2018
 
 ## License
 
