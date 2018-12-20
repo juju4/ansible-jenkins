@@ -1,25 +1,22 @@
 ---
 
 - name: yum | jenkins dependencies install
-  yum: name={{ item }} state=present
-  with_items:
-    - git
-    - subversion
-    - graphviz
-
-- name: yum | jenkins dependencies - extra
-  yum: name={{ item }} state=present
-  with_items:
-    - "{{ jenkins_extra_pkg }}"
+  yum: name={{ jenkins_extra_pkg }} state=present
+  register: pkg_result
+  until: pkg_result is success
 
 # https://access.redhat.com/solutions/2216431 rhel/centos7
 - name: yum | ensure latest curl
   yum:
     name: curl
     state: latest
+  register: pkg_result
+  until: pkg_result is success
 
 - name: RedHat | install manually python lxml
   pip: name=lxml state=present
+  register: pkg_result
+  until: pkg_result is success
 
 - block:
     - name: review nginx.pid location - systemd

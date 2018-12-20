@@ -1,14 +1,9 @@
 ---
 
 - name: apt | jenkins dependencies
-  apt: name={{ item }} state=present
-  with_items:
-    - git
-    - subversion
-    - graphviz
-
-- name: apt | jenkins dependencies - extra
   apt: name={{ jenkins_extra_pkg }} state=present
+  register: pkg_result
+  until: pkg_result is success
 
 - name: Ensure aide config directory exists
   file: dest=/etc/aide/aide.conf.d state=directory mode=0755

@@ -1,6 +1,9 @@
 ---
 
 jenkins_extra_pkg:
+    - git
+    - subversion
+    - graphviz
     - monit
     - crontabs
     - libxml2
