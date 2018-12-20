@@ -25,7 +25,7 @@ galaxy_info:
   galaxy_tags:
   - system
 dependencies:
-  - juju4.redhat-epel
+  - juju4.redhat_epel
   - kbrebanov.java
   - geerlingguy.jenkins
   - geerlingguy.nginx

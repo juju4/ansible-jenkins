@@ -1,14 +1,14 @@
 ---
 
 - name: yum | jenkins dependencies install
-  yum: name={{item}} state=present
+  yum: name={{ item }} state=present
   with_items:
     - git
     - subversion
     - graphviz
 
 - name: yum | jenkins dependencies - extra
-  yum: name={{item}} state=present
+  yum: name={{ item }} state=present
   with_items:
     - "{{ jenkins_extra_pkg }}"
 
@@ -27,4 +27,3 @@
     - name: ensure nginx.pid link in /var/run
       file: src=/run/nginx.pid dest=/var/run/nginx.pid state=link force=yes
   when: ansible_distribution_release == '7'
-

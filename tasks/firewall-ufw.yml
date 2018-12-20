@@ -58,4 +58,3 @@
 - name: ufw | default policy (outgoing)
   command: "ufw default {{ jenkins_ufw_default_policy }} outgoing"
   when: "'{{ jenkins_ufw_default_policy }} (outgoing)' not in ufwstatus.stdout"
-

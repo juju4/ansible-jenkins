@@ -40,4 +40,3 @@ script:
 #  - "test/integration/default/serverspec/run-local-tests.sh"
 ## in travis, ufw_spec NOK, local kitchen OK
 #  - "cd test/integration/default/serverspec/ && bundle exec rake spec"
-

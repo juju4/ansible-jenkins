@@ -1,14 +1,14 @@
 ---
-- set_fact:
+- name: Set fact for monit
+  set_fact:
     daemon: jenkins
 
 - block:
-    - set_fact:
+    - name: Set monit config path
+      set_fact:
         monitrc: /etc/monit/monitrc
     - name: apt | monit package
-      apt: name={{item}} state=present
-      with_items:
-        - monit
+      apt: name=monit state=present
     - block:
         - name: set monit configuration for {{ daemon }}
           template: src={{ daemon }}-monit.j2 dest=/etc/monit/monitrc.d/{{ daemon }} mode=0644 backup=yes
@@ -42,14 +42,13 @@
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 
 - block:
-    - set_fact:
+    - name: Set monit config path
+      set_fact:
         monitrc: /etc/monitrc
         monitconfd: /etc/monit.d
     - name: yum | monit package
-      yum: name={{item}} state=present
-      with_items:
-        - monit
-  when: ansible_os_family == "RedHat" or ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+      yum: name=monit state=present
+  when: ansible_os_family == "RedHat"
 
 - name: allow monit status/summary from localhost
   replace: dest={{ monitrc }} regexp={{ item.re }} replace={{ item.rep }}
@@ -58,4 +57,3 @@
     - { re: '^#     use address localhost', rep: '     use address localhost' }
     - { re: '^#     allow localhost', rep: '     allow localhost' }
 #    - { re: '^#     allow admin:monit', rep: '     allow admin:monit' }
-

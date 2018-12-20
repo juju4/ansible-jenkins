@@ -43,7 +43,14 @@
           - markupFormatter:
               class: "hudson.markup.RawHtmlMarkupFormatter"
               plugin: "antisamy-markup-formatter@1.5"
-      when: (jenkinskeycfg1 is not defined or (jenkinskeycfg1 is defined and (jenkinskeycfg1.stdout == '' or not '<markupFormatter class=\"hudson.markup.RawHtmlMarkupFormatter\" plugin=\"antisamy-markup-formatter@1.5\"/>' in jenkinskeycfg1.stdout )))
+      when: >
+        (jenkinskeycfg1 is not defined or
+          (jenkinskeycfg1 is defined and
+            (not jenkinskeycfg1.stdout or
+              not '<markupFormatter class=\"hudson.markup.RawHtmlMarkupFormatter\" plugin=\"antisamy-markup-formatter@1.5\"/>' in jenkinskeycfg1.stdout
+            )
+          )
+        )
       register: j4
 
     - name: add disableSyntaxHighlighting to markupFormatter tree
@@ -52,7 +59,12 @@
         xpath: /hudson/markupFormatter
         add_children:
           - disableSyntaxHighlighting: false
-      when: (jenkinskeycfg1 is not defined or (jenkinskeycfg1 is defined and (jenkinskeycfg1.stdout == '' or jenkinskeycfg1.stdout != jenkinskey.stdout )))
+      when: >
+        (jenkinskeycfg1 is not defined or
+          (jenkinskeycfg1 is defined and
+            (not jenkinskeycfg1.stdout or jenkinskeycfg1.stdout != jenkinskey.stdout)
+          )
+        )
       register: j5
 
     - set_fact:
@@ -77,7 +89,14 @@
         add_children:
           - markupFormatter:
               class: "hudson.markup.EscapedMarkupFormatter"
-      when: (jenkinskeycfg2 is not defined or (jenkinskeycfg2 is defined and (jenkinskeycfg2.stdout == '' or jenkinskeycfg2.stdout != '<markupFormatter class=\"hudson.markup.EscapedMarkupFormatter\"/>' )))
+      when: >
+        (jenkinskeycfg2 is not defined or
+          (jenkinskeycfg2 is defined and
+            (not jenkinskeycfg2.stdout or
+              jenkinskeycfg2.stdout != '<markupFormatter class=\"hudson.markup.EscapedMarkupFormatter\"/>'
+            )
+          )
+        )
       register: j6
 
     - set_fact:
@@ -103,7 +122,14 @@
         add_children:
           - crumbIssuer:
               class: "hudson.security.csrf.DefaultCrumbIssuer"
-      when: (jenkinskeycfg3 is not defined or (jenkinskeycfg3 is defined and (jenkinskeycfg3.stdout == '' or not '<crumbIssuer class="hudson.security.csrf.DefaultCrumbIssuer">' in jenkinskeycfg3.stdout )))
+      when: >
+        (jenkinskeycfg3 is not defined or
+          (jenkinskeycfg3 is defined and
+            (not jenkinskeycfg3.stdout or
+              not '<crumbIssuer class="hudson.security.csrf.DefaultCrumbIssuer">' in jenkinskeycfg3.stdout
+            )
+          )
+        )
       register: j7
 
     - name: add excludeClientIPFromCrumb to crumbIssuer tree
@@ -112,7 +138,14 @@
         xpath: /hudson/crumbIssuer
         add_children:
           - excludeClientIPFromCrumb: 'false'
-      when: (jenkinskeycfg3 is not defined or (jenkinskeycfg3 is defined and (jenkinskeycfg3.stdout == '' or jenkinskeycfg3.stdout != '<crumbIssuer class=\"hudson.security.csrf.DefaultCrumbIssuer\"><excludeClientIPFromCrumb>false</excludeClientIPFromCrumb></crumbIssuer>' )))
+      when: >
+        (jenkinskeycfg3 is not defined or
+          (jenkinskeycfg3 is defined and
+            (not jenkinskeycfg3.stdout or
+              jenkinskeycfg3.stdout != '<crumbIssuer class=\"hudson.security.csrf.DefaultCrumbIssuer\"><excludeClientIPFromCrumb>false</excludeClientIPFromCrumb></crumbIssuer>'
+            )
+          )
+        )
       register: j8
 
     - set_fact:
@@ -132,4 +165,3 @@
 - name: restart jenkins to load ssh keys
   service: name=jenkins state=restarted
   when: j_restart is defined and j_restart
-

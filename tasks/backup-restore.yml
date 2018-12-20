@@ -1,13 +1,15 @@
 ---
 
-- file: path={{ scriptsdir }} state=directory mode=0755
+- name: Ensure scriptsdir directory exists
+  file: path={{ scriptsdir }} state=directory mode=0755
+
 - name: add backup script
   template: src=backup-jenkins.sh.j2 dest={{ scriptsdir }}/backup-jenkins.sh mode=0755
 #- name: add restore script
 #  template: src=restore-jenkins.sh.j2 dest={{ scriptsdir }}/restore-jenkins.sh mode=0755
+
 - name: setup cron backup
   cron: name="jenkins-backup" minute="3" hour="23" weekday="0"
     job="{{ scriptsdir }}/backup-jenkins.sh > /dev/null 2>&1"
     user=root
     cron_file=ansible_jenkins-backup
-

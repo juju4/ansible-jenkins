@@ -23,7 +23,8 @@
   become_user: "{{ jenkins_user }}"
 
 - name: dashing-js for jenkins install
-  command: "dashing-js install https://github.com/kj187/dashing-jenkins_job/archive/master.zip chdir={{ jenkins_root }}"
+  command: "dashing-js install https://github.com/kj187/dashing-jenkins_job/archive/master.zip"
+  args:
+    chdir: "{{ jenkins_root }}"
   become: yes
   become_user: "{{ jenkins_user }}"
-

@@ -29,4 +29,3 @@ gitlab_nginx_listen_port: 9090
 ## Admin Area: Settings
 ## set users? cli?
 ## Enable InfluxDB Metrics ? cli?
-
