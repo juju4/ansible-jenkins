@@ -3,7 +3,7 @@
 - hosts: all
   vars:
     - jenkins_plugins:
-        - checkstyle
+        - warnings-ng-plugin
         - git
         - rebuild
 ## might add ' -Dhudson.diyChunking=false' if error like
