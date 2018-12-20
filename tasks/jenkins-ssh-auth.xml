@@ -7,33 +7,47 @@
   changed_when: false
   ignore_errors: true
 
+- name: retrieve jenkins user directory path
+  shell: "ls {{ jenkins_root }}/users/ | egrep '^{{ jenkins_admin_username }}*'"
+  register: userdir
+  changed_when: false
+
 - name: check if existing ssh keys
-  command: "xmllint --xpath '/user/properties/org.jenkinsci.main.modules.cli.auth.ssh.UserPropertyImpl/authorizedKeys/text()' {{ jenkins_root }}/users/{{ jenkins_admin_username }}/config.xml"
+  command: >
+    xmllint --xpath '/user/properties/org.jenkinsci.main.modules.cli.auth.ssh.UserPropertyImpl/authorizedKeys/text()'
+        {{ jenkins_root }}/users/{{ userdir.stdout }}/config.xml
   register: jenkinskeycfg
   changed_when: false
   ignore_errors: true
+  when: userdir is success
 
 ## not idempotent and cumulative... https://github.com/cmprescott/ansible-xml/issues/91
 - name: add local jenkins user ssh key field
   xml:
-    file: "{{ jenkins_root }}/users/{{ jenkins_admin_username }}/config.xml"
+    file: "{{ jenkins_root }}/users/{{ userdir.stdout }}/config.xml"
     xpath: /user/properties
     add_children:
       - org.jenkinsci.main.modules.cli.auth.ssh.UserPropertyImpl: ''
-## this, is not working
-#      - "<org.jenkinsci.main.modules.cli.auth.ssh.UserPropertyImpl><authorizedKeys>{{ jenkinskey.stdout | default('') }}</authorizedKeys></org.jenkinsci.main.modules.cli.auth.ssh.UserPropertyImpl>"
-  when: jenkinskey is defined and jenkinskey.stdout is defined and jenkinskey.stdout != '' and (jenkinskeycfg is not defined or (jenkinskeycfg is defined and (jenkinskeycfg.stdout == '' or jenkinskeycfg.stdout != jenkinskey.stdout )))
+  when: >
+    jenkinskey is defined and jenkinskey.stdout is defined and
+    jenkinskey.stdout and
+    (jenkinskeycfg is not defined or
+      (jenkinskeycfg is defined and (not jenkinskeycfg.stdout or jenkinskeycfg.stdout != jenkinskey.stdout ))
+    )
 
 - name: add local jenkins user ssh key to jenkins2
   xml:
-    file: "{{ jenkins_root }}/users/{{ jenkins_admin_username }}/config.xml"
+    file: "{{ jenkins_root }}/users/{{ userdir.stdout }}/config.xml"
     xpath: /user/properties/org.jenkinsci.main.modules.cli.auth.ssh.UserPropertyImpl
     add_children:
       - authorizedKeys: "{{ jenkinskey.stdout | default('') }}"
-  when: jenkinskey is defined and jenkinskey.stdout is defined and jenkinskey.stdout != '' and (jenkinskeycfg is not defined or (jenkinskeycfg is defined and (jenkinskeycfg.stdout == '' or jenkinskeycfg.stdout != jenkinskey.stdout )))
+  when: >
+    jenkinskey is defined and jenkinskey.stdout is defined and jenkinskey.stdout and
+    (jenkinskeycfg is not defined or
+      (jenkinskeycfg is defined and (not jenkinskeycfg.stdout or jenkinskeycfg.stdout != jenkinskey.stdout ))
+    )
   register: sshconfig
 
 - name: restart jenkins to load ssh keys
   service: name=jenkins state=restarted
   when: sshconfig.changed
-
