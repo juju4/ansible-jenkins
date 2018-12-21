@@ -3,6 +3,8 @@
 - name: apt | self-signed certificate packages dependencies
   apt: name=ssl-cert state=present update_cache=yes cache_valid_time=3600
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+  register: pkg_result
+  until: pkg_result is success
 
 - name: Generate SSL self-signed certificate
   command: >

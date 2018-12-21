@@ -4,6 +4,8 @@
 
 - name: install ufw
   package: name=ufw state=present
+  register: pkg_result
+  until: pkg_result is success
 
 - name: ufw | RedHat | ensure enabled
   ufw: state=enabled

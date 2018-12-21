@@ -32,4 +32,3 @@
   roles:
     - juju4.jenkins
     - juju4.w3af
-

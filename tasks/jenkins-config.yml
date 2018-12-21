@@ -21,7 +21,8 @@
     value: "{{ jenkins_slaveAgentPort | default('0') }}"
   register: j3
 
-- set_fact:
+- name: Set fact if jenkins needs restart
+  set_fact:
     j_restart: true
   when: j1.changed or j2.changed or j3.changed
 
@@ -67,7 +68,8 @@
         )
       register: j5
 
-    - set_fact:
+    - name: Set fact if jenkins needs restart
+      set_fact:
         j_restart: true
       when: j4.changed or j5.changed
 
@@ -99,7 +101,8 @@
         )
       register: j6
 
-    - set_fact:
+    - name: Set fact if jenkins needs restart
+      set_fact:
         j_restart: true
       when: j6.changed
 
@@ -148,7 +151,8 @@
         )
       register: j8
 
-    - set_fact:
+    - name: Set fact if jenkins needs restart
+      set_fact:
         j_restart: true
       when: j7.changed or j8.changed
 
