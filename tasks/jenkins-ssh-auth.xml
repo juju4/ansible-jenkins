@@ -46,8 +46,8 @@
     (jenkinskeycfg is not defined or
       (jenkinskeycfg is defined and (not jenkinskeycfg.stdout or jenkinskeycfg.stdout != jenkinskey.stdout ))
     )
-  register: sshconfig
+# to load ssh keys
+  notify:
+    - restart jenkins
 
-- name: restart jenkins to load ssh keys
-  service: name=jenkins state=restarted
-  when: sshconfig.changed
+- meta: flush_handlers

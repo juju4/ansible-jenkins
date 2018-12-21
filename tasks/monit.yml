@@ -9,6 +9,8 @@
         monitrc: /etc/monit/monitrc
     - name: apt | monit package
       apt: name=monit state=present
+      register: pkg_result
+      until: pkg_result is success
     - block:
         - name: set monit configuration for {{ daemon }}
           template: src={{ daemon }}-monit.j2 dest=/etc/monit/monitrc.d/{{ daemon }} mode=0644 backup=yes
@@ -48,6 +50,8 @@
         monitconfd: /etc/monit.d
     - name: yum | monit package
       yum: name=monit state=present
+      register: pkg_result
+      until: pkg_result is success
   when: ansible_os_family == "RedHat"
 
 - name: allow monit status/summary from localhost

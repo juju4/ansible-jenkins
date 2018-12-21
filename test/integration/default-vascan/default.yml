@@ -12,8 +12,8 @@
     - jenkins_java_options: "-Djenkins.install.runSetupWizard=false -Dmail.smtp.starttls.enable=true -Dhudson.DNSMultiCast.disabled=true -Dhudson.udp=-1 -Dhudson.model.DirectoryBrowserSupport.CSP=\\\"sandbox; default-src 'self'; img-src 'self'; style-src 'self' nvd3.org cdn.rawgit.com; script-src 'self' d3js.org nvd3.org cdn.rawgit.com\\\""
     - w3af_scan: true
     - w3af_scan_script: w3af_owasp_script.w3af
-#    - w3af_scan_targets_url: "http://127.0.0.1:8888"	# jenkins
-    - w3af_scan_targets_url: "http://127.0.0.1:9091"	# nginx reverse proxy
+#    - w3af_scan_targets_url: "http://127.0.0.1:8888"   # jenkins
+    - w3af_scan_targets_url: "http://127.0.0.1:9091"    # nginx reverse proxy
     - w3af_scan_targets_host: localhost
     - w3af_scan_targets_port: 9091
     - w3af_scan_targets_auth_url: "{{ w3af_scan_targets_url }}/login?from=%2F"
