@@ -1,4 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
+{{ ansible_managed | comment('xml') }}
 <project>
   <actions/>
   <description>&lt;img type=&quot;image/svg+xml&quot; height=&quot;300&quot; src=&quot;ws/build/pdepend/overview-pyramid.svg&quot; width=&quot;500&quot;&gt;&lt;/img&gt;&#xd;

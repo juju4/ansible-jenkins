@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><project>
+{{ ansible_managed | comment('xml') }}
   <actions/>
   <description>Template from http://jenkins-php.org&lt;br /&gt;&#13;
 &lt;img type="image/svg+xml" height="300" src="ws/build/pdepend/overview-pyramid.svg" width="500"&gt;&lt;/img&gt;&#13;
