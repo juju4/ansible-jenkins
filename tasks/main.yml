@@ -51,8 +51,18 @@
 
 #- debug: var=jenkins_job_examples
 - block:
+    - name: create job restore tree
+      file:
+        path: "{{ jenkins_root }}/restore/jobs/{{ item[:-4] | basename }}"
+        state: directory
+        mode: '0755'
+      with_items: "{{ jenkins_job_examples }}"
     - name: upload job examples
-      template: "src={{ item }} dest={{ jenkins_root }}/{{ item | basename }} mode=0644 backup=yes"
+      template:
+        src: "{{ item }}"
+        dest: "{{ jenkins_root }}/{{ jenkins_root }}/restore/jobs/{{ item[:-4] | basename }}/config.xml"
+        mode: '0644'
+        backup: yes
       with_items: "{{ jenkins_job_examples }}"
     - include: "jenkins-create-job.yml job_name={{ item[:-4] }} job_file={{ jenkins_root }}/{{ job_name | basename }}.xml"
       with_items: "{{ jenkins_job_examples }}"
