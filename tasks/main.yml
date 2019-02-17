@@ -49,6 +49,7 @@
 - name: check permissions of secrets directory
   file: "dest={{ jenkins_root }}/secrets state=directory mode=0700"
 
+#- include: butler.yml
 #- debug: var=jenkins_job_examples
 - block:
     - name: create job restore tree

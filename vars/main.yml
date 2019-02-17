@@ -29,3 +29,6 @@ gitlab_nginx_listen_port: 9090
 ## Admin Area: Settings
 ## set users? cli?
 ## Enable InfluxDB Metrics ? cli?
+
+butler_url: 'https://s3.us-east-1.amazonaws.com/butlercli/1.0.0/linux/butler'
+butler_checksum: 'sha256:734bdbea6f9a2efb39f68ac6983a06d61b657cd2535d675f0b16be4793964d42'
