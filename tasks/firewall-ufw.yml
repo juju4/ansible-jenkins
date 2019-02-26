@@ -49,14 +49,12 @@
   ufw: rule=allow interface={{ item }} direction=out
   with_items: "{{ jenkins_ufw_allow_if_out }}"
 
-## FIXME! ansible module only affect incoming traffic, not idempotent
-## Note: keep last, especially if you block by default
-- name: ufw | default policy (incoming)
-  ufw: state=enabled policy={{ jenkins_ufw_default_policy }} log=yes
-- name: ufw | check current status
-  command: "ufw status verbose"
-  register: ufwstatus
-  changed_when: false
-- name: ufw | default policy (outgoing)
-  command: "ufw default {{ jenkins_ufw_default_policy }} outgoing"
-  when: "'{{ jenkins_ufw_default_policy }} (outgoing)' not in ufwstatus.stdout"
+- name: ufw | default policy
+  ufw:
+    state: enabled
+    direction: "{{ item }}"
+    policy: "{{ jenkins_ufw_default_policy }}"
+    log: yes
+  with_items:
+    - incoming
+    - outgoing
