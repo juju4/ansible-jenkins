@@ -10,10 +10,12 @@ env:
 #    version: 6
   - distribution: centos
     version: 7
+    suite: default
 #  - distribution: ubuntu
 #    version: 18.04
   - distribution: ubuntu
     version: 16.04
+    suite: default
 #  - distribution: ubuntu
 #    version: 14.04
 #  - distribution: ubuntu
@@ -61,7 +63,7 @@ before_install:
   - sudo lxc profile device add default root disk path=/ pool=pool1
   - sudo lxc profile show default
 
-  - sudo pip install ansible
+  - sudo pip install ansible ansible-lint
   - gem install kitchen
   - gem install kitchen-ansible
   - gem install kitchen-sync
@@ -79,12 +81,20 @@ before_install:
 #  - sudo -E -u $USER kitchen diagnose --all
 
 script:
+  - ansible-lint tasks/main.yml || true
 #  - KITCHEN_LOCAL_YAML=.kitchen.local.yml bundle exec kitchen verify ${INSTANCE}
-  - sudo -E su $USER -c "env PATH=$PATH kitchen verify default-${distribution}-${version//./} -l debug || (cat $HOME/.kitchen/logs/default-${distribution}-${version//./}.log; find /tmp/kitchen)"
+  - sudo -E su $USER -c "env PATH=$PATH kitchen verify ${suite}-${distribution}-${version//./} -l debug || (cat $HOME/.kitchen/logs/${suite}-${distribution}-${version//./}.log; find /tmp/kitchen)"
 
 after_failure:
-  - "systemctl -l status"
-  - "journalctl -xe --no-pager"
+  - sudo -E su $USER -c "env PATH=$PATH kitchen exec ${suite}-${distribution}-${version//./} -c 'java -version'"
+  - sudo -E su $USER -c "env PATH=$PATH kitchen exec ${suite}-${distribution}-${version//./} -c 'systemctl -l --no-pager status jenkins'"
+  - sudo -E su $USER -c "env PATH=$PATH kitchen exec ${suite}-${distribution}-${version//./} -c 'cat /var/lib/jenkins/config.xml'"
+  - sudo -E su $USER -c "env PATH=$PATH kitchen exec ${suite}-${distribution}-${version//./} -c 'tail -100 /var/log/jenkins/jenkins.log'"
+  - sudo -E su $USER -c "env PATH=$PATH kitchen exec ${suite}-${distribution}-${version//./} -c 'netstat -anp'"
+  - sudo -E su $USER -c "env PATH=$PATH kitchen exec ${suite}-${distribution}-${version//./} -c 'ss -nlp'"
+  - sudo -E su $USER -c "env PATH=$PATH kitchen exec ${suite}-${distribution}-${version//./} -c 'systemctl -l --no-pager status'"
+  - sudo -E su $USER -c "env PATH=$PATH kitchen exec ${suite}-${distribution}-${version//./} -c 'journalctl -xe --no-pager'"
+  - sudo -E su $USER -c "env PATH=$PATH kitchen destroy ${suite}-${distribution}-${version//./}"
 
 notifications:
   webhooks: https://galaxy.ansible.com/api/v1/notifications/
