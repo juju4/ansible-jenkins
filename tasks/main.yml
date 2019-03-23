@@ -104,7 +104,7 @@
     - restart nginx
   when: ansible_os_family == 'Debian'
 
-- include: jenkins-ssh-auth.xml
+- include: jenkins-ssh-auth.yml
 
 - include: monit.yml
 
