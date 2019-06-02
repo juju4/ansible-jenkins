@@ -26,7 +26,7 @@ galaxy_info:
   - system
 dependencies:
   - juju4.redhat_epel
-  - kbrebanov.java
+  - geerlingguy.java
   - geerlingguy.jenkins
   - geerlingguy.nginx
 ## Omnibus Gitlab CE (self-inclusive nginx, reddit, ruby, ...)
