@@ -7,13 +7,19 @@ set :backend, :exec
 jenkins_url = 'https://localhost:9091/login'
 curl_arg = '-vkL'
 
-describe command("curl #{curl_arg} #{jenkins_url}"), :if => os[:family] == 'ubuntu' do
+describe command("curl #{curl_arg} #{jenkins_url}"), :if => os[:family] == 'ubuntu' && os[:release] == '16.04' do
 #  its('stdout') { should match /<meta http-equiv='refresh' content='1;url=\/login?from=%2F'\/>/ }
   its('stdout') { should match /<title>Sign in \[Jenkins\]<\/title>/ }
 #  its('stdout') { should match /Log in<\/a> to create new jobs/ }
   its('stderr') { should match /HTTP\/1.1 200 OK/ }
 #  its('stderr') { should match /X-Hudson-Theme/ }
   its('stderr') { should match /subject: C=US,ST=CA,L=San Francisco,O=Ansible,CN=default-/ }
+end
+
+describe command("curl #{curl_arg} #{jenkins_url}"), :if => os[:family] == 'ubuntu' && os[:release] == '18.04' do
+  its('stdout') { should match /<title>Sign in \[Jenkins\]<\/title>/ }
+  its('stderr') { should match /HTTP\/1.1 200 OK/ }
+  its('stderr') { should match /subject: C=US; ST=CA; L=San Francisco; O=Ansible; CN=default-/ }
 end
 
 describe command("curl #{curl_arg} #{jenkins_url}"), :if => os[:family] == 'redhat' do
