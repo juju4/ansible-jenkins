@@ -13,7 +13,7 @@ describe command('curl -v https://www.google.com/'), :if => (os[:family] == 'ubu
 end
 describe command('curl -v https://www.google.com/'), :if => os[:family] == 'ubuntu' && os[:release] == '18.04' do
   its('stdout') { should match /<title>Google<\/title>/ }
-  its('stderr') { should match /HTTP\/1.1 200 OK/ }
+  its('stderr') { should match /HTTP\/2 200/ }
 end
 describe command('curl -v https://www.github.com/') do
   its('stderr') { should match /HTTP\/1.1 301 Moved Permanently/ }
