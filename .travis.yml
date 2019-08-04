@@ -13,6 +13,7 @@ env:
     suite: default
   - distribution: ubuntu
     version: 18.04
+    suite: default
   - distribution: ubuntu
     version: 16.04
     suite: default
