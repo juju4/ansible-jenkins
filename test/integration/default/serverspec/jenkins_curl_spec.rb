@@ -13,13 +13,13 @@ describe command("curl #{curl_arg} #{jenkins_url}"), :if => os[:family] == 'ubun
 #  its('stdout') { should match /Log in<\/a> to create new jobs/ }
   its('stderr') { should match /HTTP\/1.1 200 OK/ }
 #  its('stderr') { should match /X-Hudson-Theme/ }
-  its('stderr') { should match /subject: C=US,ST=CA,L=San Francisco,O=Ansible,CN=default-/ }
+  its('stderr') { should match /issuer: O=Ansible; CN=default-/ }
 end
 
 describe command("curl #{curl_arg} #{jenkins_url}"), :if => os[:family] == 'ubuntu' && os[:release] == '18.04' do
   its('stdout') { should match /<title>Sign in \[Jenkins\]<\/title>/ }
   its('stderr') { should match /HTTP\/1.1 200 OK/ }
-  its('stderr') { should match /subject: C=US; ST=CA; L=San Francisco; O=Ansible; CN=default-/ }
+  its('stderr') { should match /issuer: O=Ansible; CN=default-/ }
 end
 
 describe command("curl #{curl_arg} #{jenkins_url}"), :if => os[:family] == 'redhat' do
@@ -29,8 +29,7 @@ describe command("curl #{curl_arg} #{jenkins_url}"), :if => os[:family] == 'redh
   its('stdout') { should match /<title>Sign in \[Jenkins\]<\/title>/ }
   its('stderr') { should match /HTTP\/1.1 200 OK/ }
 #  its('stderr') { should match /X-Hudson-Theme/ }
-  its('stderr') { should match /issuer: / }
-  its('stderr') { should match /O=Ansible,L=San Francisco,ST=CA,C=US/ }
+  its('stderr') { should match /issuer: CN=default-.*,O=Ansible/ }
 end
 
 ## plugins test
