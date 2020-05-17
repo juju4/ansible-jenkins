@@ -21,15 +21,11 @@ provisioner:
 platforms:
 ## FIXME! /bin/bash: ansible-playbook: command not found
 ##  https://github.com/neillturner/kitchen-ansible/issues/106
+  - name: ubuntu-20.04
   - name: ubuntu-18.04
-  - name: ubuntu-16.04
     driver_config:
       network:
         - ["forwarded_port", {guest: 8888, host: 8885}]
-  - name: ubuntu-14.04
-    driver_config:
-      network:
-        - ["forwarded_port", {guest: 8888, host: 8886}]
   - name: centos-7.4
     driver_config:
       network:

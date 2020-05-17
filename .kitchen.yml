@@ -18,21 +18,12 @@ provisioner:
 #  require_chef_for_busser: false
   enable_yum_epel: true
   ansible_connection: ssh
+  ansible_omnibus_url: https://raw.githubusercontent.com/juju4/omnibus-ansible/master/ansible_install.sh
 
 platforms:
+  - name: ubuntu-20.04
   - name: ubuntu-18.04
-  - name: ubuntu-16.04
-## trusty: geerlingguy.java: only 6 or 7. requires 8+
-#  - name: ubuntu-14.04
-#  - name: ubuntu-12.04
-## FIXME!
-#TASK [geerlingguy.nginx : Ensure nginx is started and enabled to start at boot.] ***
-#       fatal: [localhost]: FAILED! => {"changed": false, "failed": true, "msg": "Job for nginx.service failed because a timeout was exceeded. See \"systemctl status nginx.service\" and \"journalctl -xe\" for details.\n"}
   - name: centos-7
-## FIXME!
-#TASK [geerlingguy.nginx : Ensure nginx is started and enabled to start at boot.] ***
-#       fatal: [localhost]: FAILED! => {"changed": false, "failed": true, "msg": "nginx: [emerg] bind() to 0.0.0.0:80 failed (98: Address already in use)\nnginx: [emerg] bind() to 0.0.0.0:80 failed (98: Address already in use)\nnginx: [emerg] bind() to 0.0.0.0:80 failed (98: Address already in use)\nnginx: [emerg] bind() to 0.0.0.0:80 failed (98: Address already in use)\nnginx: [emerg] bind() to 0.0.0.0:80 failed (98: Address already in use)\nnginx: [emerg] still could not bind()\n"}
-#  - name: centos-6
 #  - name: alpine-3.4
 
 suites:
