@@ -13,7 +13,7 @@ describe command("curl #{curl_arg} #{jenkins_url}"), :if => os[:family] == 'ubun
 #  its('stdout') { should match /Log in<\/a> to create new jobs/ }
   its('stderr') { should match /HTTP\/1.1 200 OK/ }
 #  its('stderr') { should match /X-Hudson-Theme/ }
-  its('stderr') { should match /issuer: O=Ansible; CN=default-/ }
+  its('stderr') { should match /issuer: O=Ansible,CN=default-/ }
 end
 
 describe command("curl #{curl_arg} #{jenkins_url}"), :if => os[:family] == 'ubuntu' && os[:release] == '18.04' do
