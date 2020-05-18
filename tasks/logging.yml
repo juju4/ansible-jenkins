@@ -1,9 +1,11 @@
 ---
 
 - name: get rsyslog version
-  command: "rsyslogd -v | awk -F'[ ,]' '/rsyslogd/ { print $2 }'"
+  shell: "rsyslogd -v | awk 'match($0, /rsyslogd\\s+([0-9.]+)/, a) { print a[1] }'"
   changed_when: false
   register: rsyslog_v
+
+- debug: var=rsyslog_v.stdout
 
 - name: ensure /etc/rsyslog.d exists
   file: dest=/etc/rsyslog.d state=directory mode=0755
