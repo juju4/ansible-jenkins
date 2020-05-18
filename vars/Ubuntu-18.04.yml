@@ -7,7 +7,7 @@ jenkins_extra_pkg:
     - monit
 ## if using xml like ansible xml module
     - libxml2-utils
-    - python-lxml
+    - "{% if 'python3' in ansible_python_interpreter %}python3-lxml{% else %}python-lxml{% endif %}"
 
 jenkins_user_sshkeytypes:
     - rsa
