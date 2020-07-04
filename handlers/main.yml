@@ -1,6 +1,6 @@
 ---
 - name: restart nginx
-  service: name={{ nginx_svc }} state=restarted
+  service: name={{ nginx_svc | default('nginx') }} state=restarted
 - name: restart monit
   service: name=monit state=restarted
 - name: restart lxd
