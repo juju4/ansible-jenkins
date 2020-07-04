@@ -11,5 +11,20 @@
 ##      https://issues.jenkins-ci.org/browse/JENKINS-35197
     - jenkins_java_options: "-Djenkins.install.runSetupWizard=false -Dmail.smtp.starttls.enable=true -Dhudson.DNSMultiCast.disabled=true -Dhudson.udp=-1 -Dhudson.model.DirectoryBrowserSupport.CSP=\\\"sandbox; default-src 'self'; img-src 'self'; style-src 'self' nvd3.org cdn.rawgit.com; script-src 'self' d3js.org nvd3.org cdn.rawgit.com\\\""
     - nginx_pidfile: /run/nginx/nginx.pid
+  pre_tasks:
+    - name: Redhat | set extra permissions for systemd hardening
+      set_fact:
+        hardenwebserver_systemd_files_acl:
+          - { p: "/etc/pki/tls/private", perm: rx }
+          - { p: "/etc/pki/tls/private/{{ ansible_fqdn }}.key", perm: r }
+          - { p: "/var/log/nginx", perm: rwx }
+      when: ansible_os_family == "RedHat"
+    - name: Debian | set extra permissions for systemd hardening
+      set_fact:
+        hardenwebserver_systemd_files_acl:
+          - { p: "/etc/ssl/private", perm: rx }
+          - { p: "/etc/ssl/private/{{ ansible_fqdn }}.key", perm: r }
+          - { p: "/var/log/nginx", perm: rwx }
+      when: ansible_os_family == "Debian"
   roles:
     - juju4.jenkins
