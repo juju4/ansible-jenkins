@@ -8,7 +8,7 @@
   ignore_errors: true
 
 - name: retrieve jenkins user directory path
-  shell: "ls {{ jenkins_root }}/users/ | egrep '^{{ jenkins_admin_username }}*'"
+  shell: "ls {{ jenkins_root }}/users/ | egrep '^{{ jenkins_admin_username }}*' | tail -1"
   register: userdir
   changed_when: false
 
