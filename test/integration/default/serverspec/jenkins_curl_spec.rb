@@ -22,7 +22,7 @@ describe command("curl #{curl_arg} #{jenkins_url}"), :if => os[:family] == 'ubun
   its('stderr') { should match /issuer: O=Ansible; CN=default-/ }
 end
 
-describe command("curl #{curl_arg} #{jenkins_url}"), :if => os[:family] == 'redhat' do
+describe command("curl #{curl_arg} #{jenkins_url}"), :if => os[:family] == 'redhat' && os[:release] == '7' do
 #  its('stdout') { should match /<meta http-equiv='refresh' content='1;url=\/login?from=%2F'\/>/ }
 #  its('stdout') { should match /<title>Dashboard \[Jenkins\]<\/title>/ }
 #  its('stdout') { should match /Log in<\/a> to create new jobs/ }
@@ -30,6 +30,12 @@ describe command("curl #{curl_arg} #{jenkins_url}"), :if => os[:family] == 'redh
   its('stderr') { should match /HTTP\/1.1 200 OK/ }
 #  its('stderr') { should match /X-Hudson-Theme/ }
   its('stderr') { should match /issuer: CN=default-.*,O=Ansible/ }
+end
+
+describe command("curl #{curl_arg} #{jenkins_url}"), :if => os[:family] == 'redhat' && os[:release] == '8' do
+  its('stdout') { should match /<title>Sign in \[Jenkins\]<\/title>/ }
+  its('stderr') { should match /HTTP\/1.1 200 OK/ }
+  its('stderr') { should match /issuer: O=Ansible; CN=default-centos-/ }
 end
 
 ## plugins test
