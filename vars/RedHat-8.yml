@@ -1,0 +1,32 @@
+---
+
+jenkins_extra_pkg:
+    - git
+    - subversion
+    - graphviz
+    - monit
+    - crontabs
+    - libxml2
+    - libxslt-devel
+    - libxml2-devel
+# serverspec testing
+    - bind-utils
+
+jenkins_user_sshkeytypes:
+    - rsa
+    - ed25519
+
+www_user: nginx
+nginx_svc: nginx
+#nginx_confdir: /etc/nginx/default.d
+nginx_confdir: /etc/nginx/conf.d
+nginx_sitedir: /etc/nginx/conf.d
+nginx_default: /etc/nginx/conf.d/default.conf
+nginx_conf: /etc/nginx/nginx.conf
+nginx_jenkins_conf: "{{ nginx_sitedir }}/jenkins.conf"
+
+ssl_user: root
+ssl_dir: /etc/pki/tls/certs
+ssl_privatedir: /etc/pki/tls/private
+
+ufw_rulename_ssh: SSH
