@@ -33,6 +33,7 @@
           - { p: "/etc/pki/tls/private", perm: rx }
           - { p: "/etc/pki/tls/private/{{ ansible_fqdn }}.key", perm: r }
           - { p: "/var/log/nginx", perm: rwx }
+          - { p: "/var/log/nginx/error.log", perm: rw }
       when: ansible_os_family == "RedHat"
     - name: Debian | set extra permissions for systemd hardening
       set_fact:
